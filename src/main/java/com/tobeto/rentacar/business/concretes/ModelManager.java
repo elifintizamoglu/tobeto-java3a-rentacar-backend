@@ -4,6 +4,7 @@ import com.tobeto.rentacar.business.abstracts.ModelService;
 import com.tobeto.rentacar.business.dtos.requests.model.CreateModelRequest;
 import com.tobeto.rentacar.business.dtos.responses.model.CreatedModelResponse;
 import com.tobeto.rentacar.business.dtos.responses.model.GetAllModelResponse;
+import com.tobeto.rentacar.business.rules.ModelBusinessRules;
 import com.tobeto.rentacar.core.utilities.mapping.ModelMapperService;
 import com.tobeto.rentacar.dataAccess.abstracts.ModelRepository;
 import com.tobeto.rentacar.entities.concretes.Model;
@@ -20,9 +21,12 @@ public class ModelManager implements ModelService {
 
     private ModelRepository modelRepository;
     private ModelMapperService modelMapperService;
+    private ModelBusinessRules modelBusinessRules;
 
     @Override
     public CreatedModelResponse add(CreateModelRequest createModelRequest) {
+
+        modelBusinessRules.modelNameCanNotBeDuplicated(createModelRequest.getName());
 
         Model model = this.modelMapperService.forRequest()
                 .map(createModelRequest, Model.class);

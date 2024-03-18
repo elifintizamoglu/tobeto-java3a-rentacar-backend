@@ -4,6 +4,7 @@ import com.tobeto.rentacar.business.abstracts.FuelService;
 import com.tobeto.rentacar.business.dtos.requests.fuel.CreateFuelRequest;
 import com.tobeto.rentacar.business.dtos.responses.fuel.CreatedFuelResponse;
 import com.tobeto.rentacar.business.dtos.responses.fuel.GetAllFuelResponse;
+import com.tobeto.rentacar.business.rules.FuelBusinessRules;
 import com.tobeto.rentacar.core.utilities.mapping.ModelMapperService;
 import com.tobeto.rentacar.dataAccess.abstracts.FuelRepository;
 import com.tobeto.rentacar.entities.concretes.Fuel;
@@ -20,9 +21,12 @@ public class FuelManager implements FuelService {
 
     private FuelRepository fuelRepository;
     private ModelMapperService modelMapperService;
+    private FuelBusinessRules fuelBusinessRules;
 
     @Override
     public CreatedFuelResponse add(CreateFuelRequest createFuelRequest) {
+
+        fuelBusinessRules.fuelNameCanNotBeDuplicated(createFuelRequest.getName());
 
         Fuel fuel = this.modelMapperService.forRequest().map(createFuelRequest, Fuel.class);
         fuel.setCreatedDate(LocalDateTime.now());
@@ -36,9 +40,9 @@ public class FuelManager implements FuelService {
     public List<GetAllFuelResponse> getAll() {
 
         var result = fuelRepository.findAll();
-        List<GetAllFuelResponse> response= result.stream()
+        List<GetAllFuelResponse> response = result.stream()
                 .map(fuel -> modelMapperService.forResponse()
-                        .map(fuel,GetAllFuelResponse.class)).collect(Collectors.toList());
+                        .map(fuel, GetAllFuelResponse.class)).collect(Collectors.toList());
 
         return response;
     }

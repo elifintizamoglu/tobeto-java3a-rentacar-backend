@@ -1,8 +1,5 @@
 package com.tobeto.rentacar.business.dtos.requests.model;
 
-import com.tobeto.rentacar.entities.concretes.Brand;
-import com.tobeto.rentacar.entities.concretes.Fuel;
-import com.tobeto.rentacar.entities.concretes.Transmission;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;

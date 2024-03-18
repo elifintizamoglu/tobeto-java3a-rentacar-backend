@@ -4,6 +4,7 @@ import com.tobeto.rentacar.business.abstracts.CarService;
 import com.tobeto.rentacar.business.dtos.requests.car.CreateCarRequest;
 import com.tobeto.rentacar.business.dtos.responses.car.CreatedCarResponse;
 import com.tobeto.rentacar.business.dtos.responses.car.GetAllCarResponse;
+import com.tobeto.rentacar.business.rules.CarBusinessRules;
 import com.tobeto.rentacar.core.utilities.mapping.ModelMapperService;
 import com.tobeto.rentacar.dataAccess.abstracts.CarRepository;
 import com.tobeto.rentacar.entities.concretes.Car;
@@ -20,9 +21,12 @@ public class CarManager implements CarService {
 
     private CarRepository carRepository;
     private ModelMapperService modelMapperService;
+    private CarBusinessRules carBusinessRules;
 
     @Override
     public CreatedCarResponse add(CreateCarRequest createCarRequest) {
+
+        carBusinessRules.carPlateCanNotBeDuplicated(createCarRequest.getPlate());
 
         Car car = this.modelMapperService.forRequest().map(createCarRequest, Car.class);
         car.setCreatedDate(LocalDateTime.now());

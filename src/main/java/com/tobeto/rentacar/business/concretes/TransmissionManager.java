@@ -4,6 +4,7 @@ import com.tobeto.rentacar.business.abstracts.TransmissionService;
 import com.tobeto.rentacar.business.dtos.requests.transmission.CreateTransmissionRequest;
 import com.tobeto.rentacar.business.dtos.responses.transmission.CreatedTransmissionResponse;
 import com.tobeto.rentacar.business.dtos.responses.transmission.GetAllTransmissionResponse;
+import com.tobeto.rentacar.business.rules.TransmissionBusinessRules;
 import com.tobeto.rentacar.core.utilities.mapping.ModelMapperService;
 import com.tobeto.rentacar.dataAccess.abstracts.TransmissionRepository;
 import com.tobeto.rentacar.entities.concretes.Transmission;
@@ -20,9 +21,12 @@ public class TransmissionManager implements TransmissionService {
 
     private TransmissionRepository transmissionRepository;
     private ModelMapperService modelMapperService;
+    private TransmissionBusinessRules transmissionBusinessRules;
 
     @Override
     public CreatedTransmissionResponse add(CreateTransmissionRequest createTransmissionRequest) {
+
+        transmissionBusinessRules.transmissionNameCanNotBeDuplicated(createTransmissionRequest.getName());
 
         Transmission transmission = this.modelMapperService.forRequest()
                 .map(createTransmissionRequest, Transmission.class);
