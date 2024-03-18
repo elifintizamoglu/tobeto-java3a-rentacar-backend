@@ -23,4 +23,11 @@ public class TransmissionBusinessRules {
         }
     }
 
+    public void isTransmissionExists(int transmissionId){
+        boolean isExists = transmissionRepository.existsById(transmissionId);
+        if (!isExists) {
+            throw new BusinessException("Transmission does not exist with that id.");
+        }
+    }
+
 }

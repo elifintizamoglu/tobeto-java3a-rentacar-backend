@@ -22,4 +22,13 @@ public class FuelBusinessRules {
         }
     }
 
+    public void isFuelExists(int fuelId) {
+
+        boolean isExists = fuelRepository.existsById(fuelId);
+        if (!isExists) {
+            throw new BusinessException("Fuel does not exists with that id.");
+        }
+    }
+
+
 }

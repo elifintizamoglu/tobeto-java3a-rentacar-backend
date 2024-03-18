@@ -1,9 +1,6 @@
 package com.tobeto.rentacar.business.dtos.requests.car;
 
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,7 +15,7 @@ public class CreateCarRequest {
     @Max(value = 2024)
     private int modelYear;
 
-    @NotNull
+    @NotBlank
     private String plate;
 
     @NotNull

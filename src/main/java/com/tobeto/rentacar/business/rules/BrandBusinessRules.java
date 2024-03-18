@@ -20,4 +20,12 @@ public class BrandBusinessRules {
             throw new BusinessException("BrandExists");
         }
     }
+
+    public void isBrandExists(int brandId) {
+
+        boolean isExists = brandRepository.existsById(brandId);
+        if (!isExists) {
+            throw new BusinessException("Brand does not exists with that id.");
+        }
+    }
 }
