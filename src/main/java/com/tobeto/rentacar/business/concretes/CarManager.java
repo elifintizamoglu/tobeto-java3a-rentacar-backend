@@ -26,6 +26,7 @@ public class CarManager implements CarService {
 
         Car car = this.modelMapperService.forRequest().map(createCarRequest, Car.class);
         car.setCreatedDate(LocalDateTime.now());
+        car.setId(0);
         Car createdCar = this.carRepository.save(car);
 
         CreatedCarResponse createdCarResponse = this.modelMapperService.forResponse()
