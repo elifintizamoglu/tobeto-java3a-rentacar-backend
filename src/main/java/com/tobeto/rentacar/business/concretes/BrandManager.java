@@ -2,9 +2,12 @@ package com.tobeto.rentacar.business.concretes;
 
 import com.tobeto.rentacar.business.abstracts.BrandService;
 import com.tobeto.rentacar.business.dtos.requests.brand.CreateBrandRequest;
+import com.tobeto.rentacar.business.dtos.requests.brand.UpdateBrandRequest;
 import com.tobeto.rentacar.business.dtos.responses.brand.CreatedBrandResponse;
 import com.tobeto.rentacar.business.dtos.responses.brand.GetAllBrandResponse;
 
+import com.tobeto.rentacar.business.dtos.responses.brand.GetBrandByIdResponse;
+import com.tobeto.rentacar.business.dtos.responses.brand.UpdateBrandResponse;
 import com.tobeto.rentacar.business.rules.BrandBusinessRules;
 import com.tobeto.rentacar.core.utilities.mapping.ModelMapperService;
 import com.tobeto.rentacar.dataAccess.abstracts.BrandRepository;
@@ -25,7 +28,7 @@ public class BrandManager implements BrandService {
     private BrandBusinessRules brandBusinessRules;
 
     @Override
-    public CreatedBrandResponse add(CreateBrandRequest createBrandRequest) {
+    public CreatedBrandResponse addBrand(CreateBrandRequest createBrandRequest) {
 
         brandBusinessRules.brandNameCanNotBeDuplicated(createBrandRequest.getName());
 
@@ -38,12 +41,48 @@ public class BrandManager implements BrandService {
     }
 
     @Override
-    public List<GetAllBrandResponse> getAll() {
+    public List<GetAllBrandResponse> getAllBrands() {
 
         var result = brandRepository.findAll();
         List<GetAllBrandResponse> response = result.stream()
                 .map(brand -> modelMapperService.forResponse()
                         .map(brand, GetAllBrandResponse.class)).collect(Collectors.toList());
+
+        return response;
+    }
+
+    @Override
+    public void deleteBrandById(int id) {
+        Brand brand = brandRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("There is no brand with this id!"));
+        brand.setDeletedDate(LocalDateTime.now());
+        brandRepository.deleteById(id);
+    }
+
+    @Override
+    public UpdateBrandResponse updateBrand(UpdateBrandRequest updateBrandRequest, int id) {
+        Brand brand = brandRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("There is no brand with this id."));
+        Brand updatedBrand = modelMapperService.forRequest().map(updateBrandRequest, Brand.class);
+        brand.setId(id);
+        brand.setUpdatedDate(LocalDateTime.now());
+
+        brand.setName(updatedBrand.getName() != null ? updatedBrand.getName() : brand.getName());
+
+        brandRepository.save(brand);
+
+        UpdateBrandResponse response = modelMapperService.forResponse().map(brand, UpdateBrandResponse.class);
+
+        return response;
+    }
+
+    @Override
+    public GetBrandByIdResponse getBrandById(int id) {
+        Brand brand = brandRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("There is no brand with this id."));
+
+        GetBrandByIdResponse response = modelMapperService.forResponse()
+                .map(brand, GetBrandByIdResponse.class);
 
         return response;
     }

@@ -7,6 +7,7 @@ import com.tobeto.rentacar.business.dtos.responses.fuel.GetAllFuelResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public class FuelsController {
         return fuelService.add(createFuelRequest);
     }
 
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public List<GetAllFuelResponse> getAll() {
         return fuelService.getAll();

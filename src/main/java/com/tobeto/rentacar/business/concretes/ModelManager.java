@@ -2,8 +2,11 @@ package com.tobeto.rentacar.business.concretes;
 
 import com.tobeto.rentacar.business.abstracts.ModelService;
 import com.tobeto.rentacar.business.dtos.requests.model.CreateModelRequest;
+import com.tobeto.rentacar.business.dtos.requests.model.UpdateModelRequest;
 import com.tobeto.rentacar.business.dtos.responses.model.CreatedModelResponse;
 import com.tobeto.rentacar.business.dtos.responses.model.GetAllModelResponse;
+import com.tobeto.rentacar.business.dtos.responses.model.GetModelByIdResponse;
+import com.tobeto.rentacar.business.dtos.responses.model.UpdateModelResponse;
 import com.tobeto.rentacar.business.rules.BrandBusinessRules;
 import com.tobeto.rentacar.business.rules.FuelBusinessRules;
 import com.tobeto.rentacar.business.rules.ModelBusinessRules;
@@ -30,7 +33,7 @@ public class ModelManager implements ModelService {
     private BrandBusinessRules brandBusinessRules;
 
     @Override
-    public CreatedModelResponse add(CreateModelRequest createModelRequest) {
+    public CreatedModelResponse addModel(CreateModelRequest createModelRequest) {
 
         modelBusinessRules.modelNameCanNotBeDuplicated(createModelRequest.getName());
 
@@ -50,12 +53,50 @@ public class ModelManager implements ModelService {
     }
 
     @Override
-    public List<GetAllModelResponse> getAll() {
+    public List<GetAllModelResponse> getAllModels() {
 
         var result = modelRepository.findAll();
         List<GetAllModelResponse> response = result.stream()
                 .map(model -> modelMapperService.forResponse()
                         .map(model, GetAllModelResponse.class)).collect(Collectors.toList());
+
+        return response;
+    }
+
+    @Override
+    public void deleteModelById(int id) {
+        Model model = modelRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("There is no model with this id!"));
+        model.setDeletedDate(LocalDateTime.now());
+        modelRepository.deleteById(id);
+    }
+
+    @Override
+    public UpdateModelResponse updateModel(int id, UpdateModelRequest updateModelRequest) {
+        Model model = modelRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("There is no model with this id."));
+        Model updatedModel = modelMapperService.forRequest().map(updateModelRequest, Model.class);
+
+        model.setId(id);
+        model.setName(updatedModel.getName() != null ? updatedModel.getName() : model.getName());
+        model.setBrand(updatedModel.getBrand() != null ? updatedModel.getBrand() : model.getBrand());
+        model.setFuel(updatedModel.getFuel() != null ? updatedModel.getFuel() : model.getFuel());
+        model.setTransmission(updatedModel.getTransmission() != null ? updatedModel.getTransmission() : model.getTransmission());
+
+        model.setUpdatedDate(LocalDateTime.now());
+
+        modelRepository.save(model);
+        UpdateModelResponse response = modelMapperService.forResponse().map(model, UpdateModelResponse.class);
+        return response;
+    }
+
+    @Override
+    public GetModelByIdResponse getModelById(int id) {
+        Model model = modelRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("There is no model with this id."));
+
+        GetModelByIdResponse response = modelMapperService.forResponse()
+                .map(model, GetModelByIdResponse.class);
 
         return response;
     }

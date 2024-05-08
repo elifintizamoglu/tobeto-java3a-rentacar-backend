@@ -9,8 +9,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class GetAllBrandResponse {
-
+public class GetBrandByIdResponse {
     private int id;
     private String name;
     private LocalDateTime createdDate;

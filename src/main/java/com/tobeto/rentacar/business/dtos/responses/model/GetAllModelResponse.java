@@ -11,7 +11,7 @@ public class GetAllModelResponse {
 
     private int id;
     private String name;
-    private String brandName;
-    private String fuelName;
-    private String transmissionName;
+    private int brandId;
+    private int fuelId;
+    private int transmissionId;
 }

@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/rentacardbjava3a
+    url: jdbc:postgresql://localhost:5432/rentacardb
     username: postgres
     password:
     driver-class-name: org.postgresql.Driver
