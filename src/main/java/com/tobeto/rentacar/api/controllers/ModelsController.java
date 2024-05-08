@@ -3,7 +3,7 @@ package com.tobeto.rentacar.api.controllers;
 import com.tobeto.rentacar.business.abstracts.ModelService;
 import com.tobeto.rentacar.business.dtos.requests.model.CreateModelRequest;
 import com.tobeto.rentacar.business.dtos.requests.model.UpdateModelRequest;
-import com.tobeto.rentacar.business.dtos.responses.model.CreatedModelResponse;
+import com.tobeto.rentacar.business.dtos.responses.model.CreateModelResponse;
 import com.tobeto.rentacar.business.dtos.responses.model.GetAllModelResponse;
 import com.tobeto.rentacar.business.dtos.responses.model.GetModelByIdResponse;
 import com.tobeto.rentacar.business.dtos.responses.model.UpdateModelResponse;
@@ -24,7 +24,7 @@ public class ModelsController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CreatedModelResponse addModel(@RequestBody @Valid CreateModelRequest createModelRequest) {
+    public CreateModelResponse addModel(@RequestBody @Valid CreateModelRequest createModelRequest) {
         return modelService.addModel(createModelRequest);
     }
 

@@ -3,7 +3,7 @@ package com.tobeto.rentacar.api.controllers;
 import com.tobeto.rentacar.business.abstracts.BrandService;
 import com.tobeto.rentacar.business.dtos.requests.brand.CreateBrandRequest;
 import com.tobeto.rentacar.business.dtos.requests.brand.UpdateBrandRequest;
-import com.tobeto.rentacar.business.dtos.responses.brand.CreatedBrandResponse;
+import com.tobeto.rentacar.business.dtos.responses.brand.CreateBrandResponse;
 import com.tobeto.rentacar.business.dtos.responses.brand.GetAllBrandResponse;
 import com.tobeto.rentacar.business.dtos.responses.brand.GetBrandByIdResponse;
 import com.tobeto.rentacar.business.dtos.responses.brand.UpdateBrandResponse;
@@ -24,7 +24,7 @@ public class BrandsController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CreatedBrandResponse addBrand(@RequestBody @Valid CreateBrandRequest createBrandRequest) {
+    public CreateBrandResponse addBrand(@RequestBody @Valid CreateBrandRequest createBrandRequest) {
         return brandService.addBrand(createBrandRequest);
     }
 

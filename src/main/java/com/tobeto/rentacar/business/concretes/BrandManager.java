@@ -3,7 +3,7 @@ package com.tobeto.rentacar.business.concretes;
 import com.tobeto.rentacar.business.abstracts.BrandService;
 import com.tobeto.rentacar.business.dtos.requests.brand.CreateBrandRequest;
 import com.tobeto.rentacar.business.dtos.requests.brand.UpdateBrandRequest;
-import com.tobeto.rentacar.business.dtos.responses.brand.CreatedBrandResponse;
+import com.tobeto.rentacar.business.dtos.responses.brand.CreateBrandResponse;
 import com.tobeto.rentacar.business.dtos.responses.brand.GetAllBrandResponse;
 
 import com.tobeto.rentacar.business.dtos.responses.brand.GetBrandByIdResponse;
@@ -28,7 +28,7 @@ public class BrandManager implements BrandService {
     private BrandBusinessRules brandBusinessRules;
 
     @Override
-    public CreatedBrandResponse addBrand(CreateBrandRequest createBrandRequest) {
+    public CreateBrandResponse addBrand(CreateBrandRequest createBrandRequest) {
 
         brandBusinessRules.brandNameCanNotBeDuplicated(createBrandRequest.getName());
 
@@ -36,7 +36,7 @@ public class BrandManager implements BrandService {
         brand.setCreatedDate(LocalDateTime.now());
         Brand createdBrand = this.brandRepository.save(brand);
 
-        CreatedBrandResponse createdBrandResponse = this.modelMapperService.forResponse().map(createdBrand, CreatedBrandResponse.class);
+        CreateBrandResponse createdBrandResponse = this.modelMapperService.forResponse().map(createdBrand, CreateBrandResponse.class);
         return createdBrandResponse;
     }
 
@@ -56,7 +56,7 @@ public class BrandManager implements BrandService {
         Brand brand = brandRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("There is no brand with this id!"));
         brand.setDeletedDate(LocalDateTime.now());
-        brandRepository.deleteById(id);
+        brandRepository.delete(brand);
     }
 
     @Override

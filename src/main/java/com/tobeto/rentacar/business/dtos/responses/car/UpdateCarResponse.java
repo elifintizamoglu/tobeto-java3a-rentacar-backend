@@ -7,8 +7,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class GetAllCarResponse {
-
+public class UpdateCarResponse {
     private int id;
     private int modelYear;
     private String plate;

@@ -3,7 +3,7 @@ package com.tobeto.rentacar.business.concretes;
 import com.tobeto.rentacar.business.abstracts.ModelService;
 import com.tobeto.rentacar.business.dtos.requests.model.CreateModelRequest;
 import com.tobeto.rentacar.business.dtos.requests.model.UpdateModelRequest;
-import com.tobeto.rentacar.business.dtos.responses.model.CreatedModelResponse;
+import com.tobeto.rentacar.business.dtos.responses.model.CreateModelResponse;
 import com.tobeto.rentacar.business.dtos.responses.model.GetAllModelResponse;
 import com.tobeto.rentacar.business.dtos.responses.model.GetModelByIdResponse;
 import com.tobeto.rentacar.business.dtos.responses.model.UpdateModelResponse;
@@ -33,7 +33,7 @@ public class ModelManager implements ModelService {
     private BrandBusinessRules brandBusinessRules;
 
     @Override
-    public CreatedModelResponse addModel(CreateModelRequest createModelRequest) {
+    public CreateModelResponse addModel(CreateModelRequest createModelRequest) {
 
         modelBusinessRules.modelNameCanNotBeDuplicated(createModelRequest.getName());
 
@@ -47,8 +47,8 @@ public class ModelManager implements ModelService {
         model.setId(0);
         Model createdModel = this.modelRepository.save(model);
 
-        CreatedModelResponse createdModelResponse = this.modelMapperService.forResponse()
-                .map(createdModel, CreatedModelResponse.class);
+        CreateModelResponse createdModelResponse = this.modelMapperService.forResponse()
+                .map(createdModel, CreateModelResponse.class);
         return createdModelResponse;
     }
 
@@ -68,7 +68,7 @@ public class ModelManager implements ModelService {
         Model model = modelRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("There is no model with this id!"));
         model.setDeletedDate(LocalDateTime.now());
-        modelRepository.deleteById(id);
+        modelRepository.delete(model);
     }
 
     @Override
