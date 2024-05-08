@@ -72,7 +72,7 @@ public class ModelManager implements ModelService {
     }
 
     @Override
-    public UpdateModelResponse updateModel(int id, UpdateModelRequest updateModelRequest) {
+    public UpdateModelResponse updateModelById(int id, UpdateModelRequest updateModelRequest) {
         Model model = modelRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("There is no model with this id."));
         Model updatedModel = modelMapperService.forRequest().map(updateModelRequest, Model.class);

@@ -40,8 +40,8 @@ public class BrandsController {
     }
 
     @PutMapping("update/{id}")
-    public UpdateBrandResponse updateBrand(@RequestBody UpdateBrandRequest updateBrandRequest, @PathVariable int id) {
-        return brandService.updateBrand(updateBrandRequest, id);
+    public UpdateBrandResponse updateBrandById(@PathVariable int id, @RequestBody UpdateBrandRequest updateBrandRequest) {
+        return brandService.updateBrandById(id, updateBrandRequest);
     }
 
     @GetMapping(path = "getById/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

@@ -60,7 +60,7 @@ public class BrandManager implements BrandService {
     }
 
     @Override
-    public UpdateBrandResponse updateBrand(UpdateBrandRequest updateBrandRequest, int id) {
+    public UpdateBrandResponse updateBrandById(int id, UpdateBrandRequest updateBrandRequest) {
         Brand brand = brandRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("There is no brand with this id."));
         Brand updatedBrand = modelMapperService.forRequest().map(updateBrandRequest, Brand.class);
