@@ -64,11 +64,9 @@ public class BrandManager implements BrandService {
         Brand brand = brandRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("There is no brand with this id."));
         Brand updatedBrand = modelMapperService.forRequest().map(updateBrandRequest, Brand.class);
-        brand.setId(id);
+
         brand.setUpdatedDate(LocalDateTime.now());
-
         brand.setName(updatedBrand.getName() != null ? updatedBrand.getName() : brand.getName());
-
         brandRepository.save(brand);
 
         UpdateBrandResponse response = modelMapperService.forResponse().map(brand, UpdateBrandResponse.class);
