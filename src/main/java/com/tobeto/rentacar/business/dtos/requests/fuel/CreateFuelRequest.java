@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class CreateFuelRequest {
 
-    @NotBlank
-    @Size(min = 2, max = 30)
+    @NotBlank(message = "Name cannot be empty.")
+    @Size(min = 2, max = 40, message = "Name must be between 2 and 40 characters.")
     private String name;
 }

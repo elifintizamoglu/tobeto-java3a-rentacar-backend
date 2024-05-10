@@ -40,7 +40,7 @@ public class RentalsController {
     }
 
     @PutMapping("update/{id}")
-    public UpdateRentalResponse updateRentalById(@PathVariable int id, @RequestBody UpdateRentalRequest updateRentalRequest) {
+    public UpdateRentalResponse updateRentalById(@PathVariable int id, @RequestBody @Valid UpdateRentalRequest updateRentalRequest) {
         return rentalService.updateRentalById(id, updateRentalRequest);
     }
 

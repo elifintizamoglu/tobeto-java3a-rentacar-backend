@@ -11,19 +11,20 @@ import lombok.NoArgsConstructor;
 @Data
 public class UpdateCarRequest {
 
-    @NotNull
-    @Min(value = 1950)
-    @Max(value = 2024)
+    @NotNull(message = "Model year cannot be empty.")
+    @Min(value = 1980, message = "Model year cannot be older than 1980.")
+    @Max(value = 2024, message = "Model year cannot be newer than 1980.")
     private int modelYear;
 
-    @NotBlank
+    @Pattern(regexp = "^(0[1-9]|[1-7][0-9]|8[01]) (([A-Z]) (\\d{4,5})|([A-Z]{2}) (\\d{3,4})|([A-Z]{3}) (\\d{2,3}))$",
+            message = "Please enter a valid plate syntax.")
     private String plate;
 
     private CarState state;
 
-    @Positive
+    @Positive(message = "Daily price must be bigger than 0.")
     private double dailyPrice;
 
-    @NotNull
+    @Positive(message = "Model id must be bigger than 0.")
     private int modelId;
 }

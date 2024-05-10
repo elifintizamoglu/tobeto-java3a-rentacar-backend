@@ -40,7 +40,7 @@ public class TransmissionsController {
     }
 
     @PutMapping("update/{id}")
-    public UpdateTransmissionResponse updateTransmissionById(int id, UpdateTransmissionRequest updateTransmissionRequest) {
+    public UpdateTransmissionResponse updateTransmissionById(@PathVariable int id, @RequestBody @Valid UpdateTransmissionRequest updateTransmissionRequest) {
         return transmissionService.updateTransmissionById(id, updateTransmissionRequest);
     }
 

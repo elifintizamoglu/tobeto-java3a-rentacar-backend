@@ -1,7 +1,7 @@
 package com.tobeto.rentacar.business.dtos.requests.model;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,16 +11,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class UpdateModelRequest {
-    @NotBlank
-    @Size(min = 2, max = 30)
+
+    @NotBlank(message = "Name cannot be empty.")
+    @Size(min = 2, max = 40, message = "Name must be between 2 and 40 characters.")
     private String name;
 
-    @NotNull
+    @Positive(message = "Brand id must be bigger than 0.")
     private int brandId;
 
-    @NotNull
+    @Positive(message = "Fuel id must be bigger than 0.")
     private int fuelId;
 
-    @NotNull
+    @Positive(message = "Transmission id must be bigger than 0.")
     private int transmissionId;
 }

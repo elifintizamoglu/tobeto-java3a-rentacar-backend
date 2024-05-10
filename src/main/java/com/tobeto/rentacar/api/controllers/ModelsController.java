@@ -40,7 +40,7 @@ public class ModelsController {
     }
 
     @PutMapping("update/{id}")
-    public UpdateModelResponse updateModelById(@PathVariable int id, @RequestBody UpdateModelRequest updateModelRequest) {
+    public UpdateModelResponse updateModelById(@PathVariable int id, @RequestBody @Valid UpdateModelRequest updateModelRequest) {
         return modelService.updateModelById(id, updateModelRequest);
     }
 
