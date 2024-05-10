@@ -1,5 +1,6 @@
 package com.tobeto.rentacar.business.rules;
 
+import com.tobeto.rentacar.business.constants.FuelMessages;
 import com.tobeto.rentacar.core.utilities.exceptions.types.BusinessException;
 import com.tobeto.rentacar.dataAccess.abstracts.FuelRepository;
 import com.tobeto.rentacar.entities.concretes.Fuel;
@@ -18,7 +19,7 @@ public class FuelBusinessRules {
 
         Optional<Fuel> fuel = fuelRepository.findByNameIgnoreCase(fuelName);
         if (fuel.isPresent()) {
-            throw new BusinessException("FuelExists");
+            throw new BusinessException(FuelMessages.FuelNameAlreadyExists);
         }
     }
 
@@ -26,9 +27,8 @@ public class FuelBusinessRules {
 
         boolean isExists = fuelRepository.existsById(fuelId);
         if (!isExists) {
-            throw new BusinessException("Fuel does not exists with that id.");
+            throw new BusinessException(FuelMessages.FuelNotFound);
         }
     }
-
 
 }

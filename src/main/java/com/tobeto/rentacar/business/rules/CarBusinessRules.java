@@ -1,5 +1,6 @@
 package com.tobeto.rentacar.business.rules;
 
+import com.tobeto.rentacar.business.constants.CarMessages;
 import com.tobeto.rentacar.core.utilities.exceptions.types.BusinessException;
 import com.tobeto.rentacar.dataAccess.abstracts.CarRepository;
 import com.tobeto.rentacar.entities.concretes.Car;
@@ -14,11 +15,11 @@ public class CarBusinessRules {
 
     CarRepository carRepository;
 
-    public void carPlateCanNotBeDuplicated(String plate){
+    public void carPlateCanNotBeDuplicated(String plate) {
         Optional<Car> car = carRepository.findByPlateIgnoreCase(plate);
 
-        if (car.isPresent()){
-            throw new BusinessException("CarExists");
+        if (car.isPresent()) {
+            throw new BusinessException(CarMessages.CarPlateAlreadyExists);
         }
     }
 }

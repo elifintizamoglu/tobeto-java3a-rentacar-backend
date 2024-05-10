@@ -1,6 +1,7 @@
 package com.tobeto.rentacar.business.concretes;
 
 import com.tobeto.rentacar.business.abstracts.FuelService;
+import com.tobeto.rentacar.business.constants.FuelMessages;
 import com.tobeto.rentacar.business.dtos.requests.fuel.CreateFuelRequest;
 import com.tobeto.rentacar.business.dtos.requests.fuel.UpdateFuelRequest;
 import com.tobeto.rentacar.business.dtos.responses.fuel.CreateFuelResponse;
@@ -8,6 +9,7 @@ import com.tobeto.rentacar.business.dtos.responses.fuel.GetAllFuelResponse;
 import com.tobeto.rentacar.business.dtos.responses.fuel.GetFuelByIdResponse;
 import com.tobeto.rentacar.business.dtos.responses.fuel.UpdateFuelResponse;
 import com.tobeto.rentacar.business.rules.FuelBusinessRules;
+import com.tobeto.rentacar.core.utilities.exceptions.types.ResourceNotFoundException;
 import com.tobeto.rentacar.core.utilities.mapping.ModelMapperService;
 import com.tobeto.rentacar.dataAccess.abstracts.FuelRepository;
 import com.tobeto.rentacar.entities.concretes.Fuel;
@@ -52,14 +54,14 @@ public class FuelManager implements FuelService {
 
     @Override
     public void deleteFuelById(int id) {
-        Fuel fuel = fuelRepository.findById(id).orElseThrow(() -> new RuntimeException("There is no fuel with this id!"));
+        Fuel fuel = fuelRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(FuelMessages.FuelNotFound));
         fuel.setDeletedDate(LocalDateTime.now());
         fuelRepository.delete(fuel);
     }
 
     @Override
     public UpdateFuelResponse updateFuelById(int id, UpdateFuelRequest updateFuelRequest) {
-        Fuel fuel = fuelRepository.findById(id).orElseThrow(() -> new RuntimeException("There is no fuel with this id!"));
+        Fuel fuel = fuelRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(FuelMessages.FuelNotFound));
         Fuel updatedFuel = modelMapperService.forResponse().map(updateFuelRequest, Fuel.class);
         fuel.setUpdatedDate(LocalDateTime.now());
         fuel.setName(updatedFuel.getName() != null ? updatedFuel.getName() : fuel.getName());
@@ -70,7 +72,7 @@ public class FuelManager implements FuelService {
 
     @Override
     public GetFuelByIdResponse getFuelById(int id) {
-        Fuel fuel = fuelRepository.findById(id).orElseThrow(() -> new RuntimeException("There is no fuel with this id!"));
+        Fuel fuel = fuelRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(FuelMessages.FuelNotFound));
         GetFuelByIdResponse response = modelMapperService.forResponse().map(fuel, GetFuelByIdResponse.class);
         return response;
     }

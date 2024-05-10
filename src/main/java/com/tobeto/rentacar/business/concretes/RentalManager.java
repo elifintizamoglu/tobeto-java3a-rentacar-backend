@@ -1,12 +1,14 @@
 package com.tobeto.rentacar.business.concretes;
 
 import com.tobeto.rentacar.business.abstracts.RentalService;
+import com.tobeto.rentacar.business.constants.RentalMessages;
 import com.tobeto.rentacar.business.dtos.requests.rental.CreateRentalRequest;
 import com.tobeto.rentacar.business.dtos.requests.rental.UpdateRentalRequest;
 import com.tobeto.rentacar.business.dtos.responses.rental.CreateRentalResponse;
 import com.tobeto.rentacar.business.dtos.responses.rental.GetAllRentalResponse;
 import com.tobeto.rentacar.business.dtos.responses.rental.GetRentalByIdResponse;
 import com.tobeto.rentacar.business.dtos.responses.rental.UpdateRentalResponse;
+import com.tobeto.rentacar.core.utilities.exceptions.types.ResourceNotFoundException;
 import com.tobeto.rentacar.core.utilities.mapping.ModelMapperService;
 import com.tobeto.rentacar.dataAccess.abstracts.RentalRepository;
 import com.tobeto.rentacar.entities.concretes.Rental;
@@ -44,7 +46,7 @@ public class RentalManager implements RentalService {
 
     @Override
     public void deleteRentalById(int id) {
-        Rental rental = rentalRepository.findById(id).orElseThrow(() -> new RuntimeException("There is no rental with this id."));
+        Rental rental = rentalRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(RentalMessages.RentalNotFound));
         rental.setDeletedDate(LocalDateTime.now());
         rentalRepository.delete(rental);
     }
@@ -52,7 +54,7 @@ public class RentalManager implements RentalService {
     @Override
     public UpdateRentalResponse updateRentalById(int id, UpdateRentalRequest updateRentalRequest) {
         Rental rental = rentalRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("There is no rental with this id."));
+                .orElseThrow(() -> new ResourceNotFoundException(RentalMessages.RentalNotFound));
         Rental updatedRental = modelMapperService.forRequest().map(updateRentalRequest, Rental.class);
 
         rental.setCar(updatedRental.getCar() != null ? updatedRental.getCar() : rental.getCar());
@@ -70,7 +72,7 @@ public class RentalManager implements RentalService {
 
     @Override
     public GetRentalByIdResponse getRentalById(int id) {
-        Rental rental = rentalRepository.findById(id).orElseThrow(() -> new RuntimeException("There is no rental with this id"));
+        Rental rental = rentalRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(RentalMessages.RentalNotFound));
         GetRentalByIdResponse response = modelMapperService.forResponse().map(rental, GetRentalByIdResponse.class);
         return response;
     }

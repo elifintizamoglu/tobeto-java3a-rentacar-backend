@@ -1,12 +1,14 @@
 package com.tobeto.rentacar.business.concretes;
 
 import com.tobeto.rentacar.business.abstracts.UserService;
+import com.tobeto.rentacar.business.constants.UserMessages;
 import com.tobeto.rentacar.business.dtos.requests.user.CreateUserRequest;
 import com.tobeto.rentacar.business.dtos.requests.user.UpdateUserRequest;
 import com.tobeto.rentacar.business.dtos.responses.user.CreateUserResponse;
 import com.tobeto.rentacar.business.dtos.responses.user.GetAllUserResponse;
 import com.tobeto.rentacar.business.dtos.responses.user.GetUserByIdResponse;
 import com.tobeto.rentacar.business.dtos.responses.user.UpdateUserResponse;
+import com.tobeto.rentacar.core.utilities.exceptions.types.ResourceNotFoundException;
 import com.tobeto.rentacar.core.utilities.mapping.ModelMapperService;
 import com.tobeto.rentacar.dataAccess.abstracts.UserRepository;
 import com.tobeto.rentacar.entities.concretes.User;
@@ -44,14 +46,14 @@ public class UserManager implements UserService {
 
     @Override
     public void deleteUserById(int id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("There is no user with this id"));
+        User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(UserMessages.UserNotFound));
         user.setDeletedDate(LocalDateTime.now());
         userRepository.delete(user);
     }
 
     @Override
     public UpdateUserResponse updateUserById(int id, UpdateUserRequest updateUserRequest) {
-        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("There is no user with this id"));
+        User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(UserMessages.UserNotFound));
         User updatedUser = modelMapperService.forRequest().map(updateUserRequest, User.class);
 
         user.setUpdatedDate(LocalDateTime.now());
@@ -68,7 +70,7 @@ public class UserManager implements UserService {
 
     @Override
     public GetUserByIdResponse getUserById(int id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("There is no user with this id"));
+        User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(UserMessages.UserNotFound));
         GetUserByIdResponse response = modelMapperService.forResponse().map(user, GetUserByIdResponse.class);
         return response;
     }

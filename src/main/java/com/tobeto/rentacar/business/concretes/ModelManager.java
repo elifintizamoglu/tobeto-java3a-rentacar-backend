@@ -1,6 +1,7 @@
 package com.tobeto.rentacar.business.concretes;
 
 import com.tobeto.rentacar.business.abstracts.ModelService;
+import com.tobeto.rentacar.business.constants.ModelMessages;
 import com.tobeto.rentacar.business.dtos.requests.model.CreateModelRequest;
 import com.tobeto.rentacar.business.dtos.requests.model.UpdateModelRequest;
 import com.tobeto.rentacar.business.dtos.responses.model.CreateModelResponse;
@@ -11,6 +12,7 @@ import com.tobeto.rentacar.business.rules.BrandBusinessRules;
 import com.tobeto.rentacar.business.rules.FuelBusinessRules;
 import com.tobeto.rentacar.business.rules.ModelBusinessRules;
 import com.tobeto.rentacar.business.rules.TransmissionBusinessRules;
+import com.tobeto.rentacar.core.utilities.exceptions.types.ResourceNotFoundException;
 import com.tobeto.rentacar.core.utilities.mapping.ModelMapperService;
 import com.tobeto.rentacar.dataAccess.abstracts.ModelRepository;
 import com.tobeto.rentacar.entities.concretes.Model;
@@ -66,7 +68,7 @@ public class ModelManager implements ModelService {
     @Override
     public void deleteModelById(int id) {
         Model model = modelRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("There is no model with this id!"));
+                .orElseThrow(() -> new ResourceNotFoundException(ModelMessages.ModelNotFound));
         model.setDeletedDate(LocalDateTime.now());
         modelRepository.delete(model);
     }
@@ -74,7 +76,7 @@ public class ModelManager implements ModelService {
     @Override
     public UpdateModelResponse updateModelById(int id, UpdateModelRequest updateModelRequest) {
         Model model = modelRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("There is no model with this id."));
+                .orElseThrow(() -> new ResourceNotFoundException(ModelMessages.ModelNotFound));
         Model updatedModel = modelMapperService.forRequest().map(updateModelRequest, Model.class);
 
         model.setId(id);
@@ -93,7 +95,7 @@ public class ModelManager implements ModelService {
     @Override
     public GetModelByIdResponse getModelById(int id) {
         Model model = modelRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("There is no model with this id."));
+                .orElseThrow(() -> new ResourceNotFoundException(ModelMessages.ModelNotFound));
 
         GetModelByIdResponse response = modelMapperService.forResponse()
                 .map(model, GetModelByIdResponse.class);

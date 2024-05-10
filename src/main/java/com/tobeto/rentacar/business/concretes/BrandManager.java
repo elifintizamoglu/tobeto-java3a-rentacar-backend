@@ -1,6 +1,7 @@
 package com.tobeto.rentacar.business.concretes;
 
 import com.tobeto.rentacar.business.abstracts.BrandService;
+import com.tobeto.rentacar.business.constants.BrandMessages;
 import com.tobeto.rentacar.business.dtos.requests.brand.CreateBrandRequest;
 import com.tobeto.rentacar.business.dtos.requests.brand.UpdateBrandRequest;
 import com.tobeto.rentacar.business.dtos.responses.brand.CreateBrandResponse;
@@ -9,6 +10,7 @@ import com.tobeto.rentacar.business.dtos.responses.brand.GetAllBrandResponse;
 import com.tobeto.rentacar.business.dtos.responses.brand.GetBrandByIdResponse;
 import com.tobeto.rentacar.business.dtos.responses.brand.UpdateBrandResponse;
 import com.tobeto.rentacar.business.rules.BrandBusinessRules;
+import com.tobeto.rentacar.core.utilities.exceptions.types.ResourceNotFoundException;
 import com.tobeto.rentacar.core.utilities.mapping.ModelMapperService;
 import com.tobeto.rentacar.dataAccess.abstracts.BrandRepository;
 import com.tobeto.rentacar.entities.concretes.Brand;
@@ -53,16 +55,16 @@ public class BrandManager implements BrandService {
 
     @Override
     public void deleteBrandById(int id) {
-        Brand brand = brandRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("There is no brand with this id!"));
+        Brand brand = brandRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException(BrandMessages.BrandNotFound));
         brand.setDeletedDate(LocalDateTime.now());
         brandRepository.delete(brand);
     }
 
     @Override
     public UpdateBrandResponse updateBrandById(int id, UpdateBrandRequest updateBrandRequest) {
-        Brand brand = brandRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("There is no brand with this id."));
+        Brand brand = brandRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException(BrandMessages.BrandNotFound));
         Brand updatedBrand = modelMapperService.forRequest().map(updateBrandRequest, Brand.class);
 
         brand.setUpdatedDate(LocalDateTime.now());
@@ -76,8 +78,8 @@ public class BrandManager implements BrandService {
 
     @Override
     public GetBrandByIdResponse getBrandById(int id) {
-        Brand brand = brandRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("There is no brand with this id."));
+        Brand brand = brandRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException(BrandMessages.BrandNotFound));
 
         GetBrandByIdResponse response = modelMapperService.forResponse()
                 .map(brand, GetBrandByIdResponse.class);

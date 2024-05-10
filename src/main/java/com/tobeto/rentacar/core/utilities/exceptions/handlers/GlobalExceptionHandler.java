@@ -1,8 +1,10 @@
 package com.tobeto.rentacar.core.utilities.exceptions.handlers;
 
 import com.tobeto.rentacar.core.utilities.exceptions.problemDetails.BusinessProblemDetails;
+import com.tobeto.rentacar.core.utilities.exceptions.problemDetails.ResourceNotFoundDetails;
 import com.tobeto.rentacar.core.utilities.exceptions.problemDetails.ValidationProblemDetails;
 import com.tobeto.rentacar.core.utilities.exceptions.types.BusinessException;
+import com.tobeto.rentacar.core.utilities.exceptions.types.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -36,4 +38,15 @@ public class GlobalExceptionHandler {
         validationProblemDetails.setErrors(validationErrors);
         return validationProblemDetails;
     }
+
+    @ExceptionHandler({ResourceNotFoundException.class})
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResourceNotFoundDetails handleResourceNotFoundException(ResourceNotFoundException exception) {
+
+        ResourceNotFoundDetails resourceNotFoundDetails = new ResourceNotFoundDetails();
+        resourceNotFoundDetails.setDetail(exception.getMessage());
+        return resourceNotFoundDetails;
+    }
+
+
 }

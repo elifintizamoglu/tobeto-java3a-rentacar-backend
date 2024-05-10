@@ -1,5 +1,6 @@
 package com.tobeto.rentacar.business.rules;
 
+import com.tobeto.rentacar.business.constants.TransmissionMessages;
 import com.tobeto.rentacar.core.utilities.exceptions.types.BusinessException;
 import com.tobeto.rentacar.dataAccess.abstracts.TransmissionRepository;
 import com.tobeto.rentacar.entities.concretes.Transmission;
@@ -19,14 +20,14 @@ public class TransmissionBusinessRules {
         Optional<Transmission> transmission =
                 transmissionRepository.findByNameIgnoreCase(transmissionName);
         if (transmission.isPresent()) {
-            throw new BusinessException("TransmissionExists");
+            throw new BusinessException(TransmissionMessages.TransmissionNameAlreadyExists);
         }
     }
 
-    public void isTransmissionExists(int transmissionId){
+    public void isTransmissionExists(int transmissionId) {
         boolean isExists = transmissionRepository.existsById(transmissionId);
         if (!isExists) {
-            throw new BusinessException("Transmission does not exist with that id.");
+            throw new BusinessException(TransmissionMessages.TransmissionNotFound);
         }
     }
 

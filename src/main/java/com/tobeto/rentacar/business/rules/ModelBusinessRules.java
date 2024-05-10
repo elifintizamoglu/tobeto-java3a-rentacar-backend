@@ -1,5 +1,6 @@
 package com.tobeto.rentacar.business.rules;
 
+import com.tobeto.rentacar.business.constants.ModelMessages;
 import com.tobeto.rentacar.core.utilities.exceptions.types.BusinessException;
 import com.tobeto.rentacar.dataAccess.abstracts.ModelRepository;
 import com.tobeto.rentacar.entities.concretes.Model;
@@ -17,7 +18,7 @@ public class ModelBusinessRules {
     public void modelNameCanNotBeDuplicated(String modelName) {
         Optional<Model> model = modelRepository.findByNameIgnoreCase(modelName);
         if (model.isPresent()) {
-            throw new BusinessException("ModelExists");
+            throw new BusinessException(ModelMessages.ModelNameAlreadyExists);
         }
     }
 }
