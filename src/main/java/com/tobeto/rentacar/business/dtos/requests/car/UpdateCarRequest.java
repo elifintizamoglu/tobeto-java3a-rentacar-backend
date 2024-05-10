@@ -1,5 +1,6 @@
 package com.tobeto.rentacar.business.dtos.requests.car;
 
+import com.tobeto.rentacar.entities.concretes.CarState;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,10 +19,7 @@ public class UpdateCarRequest {
     @NotBlank
     private String plate;
 
-    @NotNull
-    @Min(value = 1)
-    @Max(value = 3)
-    private int state;
+    private CarState state;
 
     @Positive
     private double dailyPrice;

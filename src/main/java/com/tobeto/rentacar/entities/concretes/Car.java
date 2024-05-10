@@ -22,7 +22,8 @@ public class Car extends BaseEntity {
     private String plate;
 
     @Column(name = "state")
-    private int state;
+    @Enumerated(EnumType.STRING)
+    private CarState state;
 
     @Column(name = "dailyPrice")
     private double dailyPrice;

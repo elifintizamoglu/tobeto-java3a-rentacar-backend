@@ -68,7 +68,7 @@ public class CarManager implements CarService {
         car.setUpdatedDate(LocalDateTime.now());
         car.setModelYear(updatedCar.getModelYear() != 0 ? updatedCar.getModelYear() : car.getModelYear());
         car.setPlate(updatedCar.getPlate() != null ? updatedCar.getPlate() : car.getPlate());
-        car.setState(updatedCar.getState() != 0 ? updatedCar.getState() : car.getState());
+        car.setState(updatedCar.getState() != null ? updatedCar.getState() : car.getState());
         car.setDailyPrice(updatedCar.getDailyPrice() != 0 ? updatedCar.getDailyPrice() : car.getDailyPrice());
         car.setModel(updatedCar.getModel() != null ? updatedCar.getModel() : car.getModel());
 
