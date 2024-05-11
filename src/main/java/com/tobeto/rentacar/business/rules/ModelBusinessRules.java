@@ -18,7 +18,9 @@ public class ModelBusinessRules {
 
     public void modelNameCanNotBeDuplicated(String modelName) {
 
-        Optional<Model> model = modelRepository.findByNameIgnoreCase(modelName);
+        String trimmedName = modelName.trim();
+        Optional<Model> model = modelRepository.findByNameIgnoreCase(trimmedName);
+
         if (model.isPresent()) {
             throw new BusinessException(ModelMessages.ModelNameAlreadyExists);
         }

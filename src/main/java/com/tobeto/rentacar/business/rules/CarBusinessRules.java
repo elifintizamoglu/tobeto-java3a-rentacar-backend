@@ -18,7 +18,9 @@ public class CarBusinessRules {
 
     public void carPlateCanNotBeDuplicated(String plate) {
 
-        Optional<Car> car = carRepository.findByPlateIgnoreCase(plate);
+        String trimmedPlate = plate.trim();
+
+        Optional<Car> car = carRepository.findByPlateIgnoreCase(trimmedPlate);
         if (car.isPresent()) {
             throw new BusinessException(CarMessages.CarPlateAlreadyExists);
         }

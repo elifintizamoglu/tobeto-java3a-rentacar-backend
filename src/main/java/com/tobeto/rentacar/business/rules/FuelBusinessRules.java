@@ -17,7 +17,9 @@ public class FuelBusinessRules {
 
     public void fuelNameCanNotBeDuplicated(String fuelName) {
 
-        Optional<Fuel> fuel = fuelRepository.findByNameIgnoreCase(fuelName);
+        String trimmedName = fuelName.trim();
+        Optional<Fuel> fuel = fuelRepository.findByNameIgnoreCase(trimmedName);
+
         if (fuel.isPresent()) {
             throw new BusinessException(FuelMessages.FuelNameAlreadyExists);
         }

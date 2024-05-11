@@ -18,7 +18,9 @@ public class BrandBusinessRules {
 
     public void brandNameCanNotBeDuplicated(String brandName) {
 
-        Optional<Brand> brand = brandRepository.findByNameIgnoreCase(brandName);
+        String trimmedName = brandName.trim();
+        Optional<Brand> brand = brandRepository.findByNameIgnoreCase(trimmedName);
+
         if (brand.isPresent()) {
             throw new BusinessException(BrandMessages.BrandNameAlreadyExists);
         }

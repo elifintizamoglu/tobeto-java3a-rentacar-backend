@@ -18,7 +18,9 @@ public class UserBusinessRules {
 
     public void emailCanNotBeDuplicated(String email) {
 
-        Optional<User> user = userRepository.findByEmail(email);
+        String trimmedEmail = email.trim();
+        Optional<User> user = userRepository.findByEmail(trimmedEmail);
+
         if (user.isPresent()) {
             throw new BusinessException(UserMessages.EmailAlreadyExists);
         }
