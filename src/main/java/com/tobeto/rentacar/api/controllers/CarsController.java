@@ -35,16 +35,19 @@ public class CarsController {
     }
 
     @DeleteMapping("delete/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteCarById(@PathVariable int id) {
         carService.deleteCarById(id);
     }
 
     @PutMapping("update/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public UpdateCarResponse updateCarById(@PathVariable int id, @RequestBody @Valid UpdateCarRequest updateCarRequest) {
         return carService.updateCarById(id, updateCarRequest);
     }
 
     @GetMapping(path = "getById/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
     public GetCarByIdResponse getCarById(int id) {
         return carService.getCarById(id);
     }

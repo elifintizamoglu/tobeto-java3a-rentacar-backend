@@ -35,16 +35,19 @@ public class ModelsController {
     }
 
     @DeleteMapping("delete/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteModelById(@PathVariable int id) {
         modelService.deleteModelById(id);
     }
 
     @PutMapping("update/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public UpdateModelResponse updateModelById(@PathVariable int id, @RequestBody @Valid UpdateModelRequest updateModelRequest) {
         return modelService.updateModelById(id, updateModelRequest);
     }
 
     @GetMapping("getById/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public GetModelByIdResponse getModelById(@PathVariable int id) {
         return modelService.getModelById(id);
     }

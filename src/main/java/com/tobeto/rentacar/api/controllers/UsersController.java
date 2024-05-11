@@ -35,16 +35,19 @@ public class UsersController {
     }
 
     @DeleteMapping("delete/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUserById(@PathVariable int id) {
         userService.deleteUserById(id);
     }
 
     @PutMapping("update/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public UpdateUserResponse updateUserById(@PathVariable int id, @RequestBody @Valid UpdateUserRequest updateUserRequest) {
         return userService.updateUserById(id, updateUserRequest);
     }
 
     @GetMapping(path = "getById/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
     public GetUserByIdResponse getUserById(@PathVariable int id) {
         return userService.getUserById(id);
     }

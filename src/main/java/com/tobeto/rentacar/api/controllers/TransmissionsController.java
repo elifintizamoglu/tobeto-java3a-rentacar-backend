@@ -35,16 +35,19 @@ public class TransmissionsController {
     }
 
     @DeleteMapping("delete/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteTransmissionById(@PathVariable int id) {
         transmissionService.deleteTransmissionById(id);
     }
 
     @PutMapping("update/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public UpdateTransmissionResponse updateTransmissionById(@PathVariable int id, @RequestBody @Valid UpdateTransmissionRequest updateTransmissionRequest) {
         return transmissionService.updateTransmissionById(id, updateTransmissionRequest);
     }
 
     @GetMapping(path = "getById/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
     public GetTransmissionByIdResponse getTransmissionById(@PathVariable int id) {
         return transmissionService.getTransmissionById(id);
     }

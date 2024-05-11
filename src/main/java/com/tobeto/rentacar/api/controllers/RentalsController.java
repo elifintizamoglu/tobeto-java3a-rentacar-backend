@@ -35,16 +35,19 @@ public class RentalsController {
     }
 
     @DeleteMapping("delete/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteRentalById(@PathVariable int id) {
         rentalService.deleteRentalById(id);
     }
 
     @PutMapping("update/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public UpdateRentalResponse updateRentalById(@PathVariable int id, @RequestBody @Valid UpdateRentalRequest updateRentalRequest) {
         return rentalService.updateRentalById(id, updateRentalRequest);
     }
 
     @GetMapping(path = "getById/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
     public GetRentalByIdResponse getRentalById(@PathVariable int id) {
         return rentalService.getRentalById(id);
     }

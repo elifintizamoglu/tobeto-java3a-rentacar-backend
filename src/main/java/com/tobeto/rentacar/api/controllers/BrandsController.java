@@ -35,16 +35,19 @@ public class BrandsController {
     }
 
     @DeleteMapping("delete/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteBrandById(@PathVariable int id) {
         brandService.deleteBrandById(id);
     }
 
     @PutMapping("update/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public UpdateBrandResponse updateBrandById(@PathVariable int id, @RequestBody @Valid UpdateBrandRequest updateBrandRequest) {
         return brandService.updateBrandById(id, updateBrandRequest);
     }
 
     @GetMapping(path = "getById/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
     public GetBrandByIdResponse getBrandById(@PathVariable int id) {
         return brandService.getBrandById(id);
     }

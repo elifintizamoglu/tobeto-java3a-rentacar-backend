@@ -35,16 +35,19 @@ public class FuelsController {
     }
 
     @DeleteMapping("delete/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteFuelById(@PathVariable int id) {
         fuelService.deleteFuelById(id);
     }
 
     @PutMapping("update/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public UpdateFuelResponse updateFuelById(@PathVariable int id, @RequestBody @Valid UpdateFuelRequest updateFuelRequest) {
         return fuelService.updateFuelById(id, updateFuelRequest);
     }
 
     @GetMapping(path = "getById/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
     public GetFuelByIdResponse getFuelById(@PathVariable int id) {
         return fuelService.getFuelById(id);
     }
