@@ -28,6 +28,7 @@ public class UserManager implements UserService {
 
     @Override
     public CreateUserResponse addUser(CreateUserRequest createUserRequest) {
+
         User user = modelMapperService.forRequest().map(createUserRequest, User.class);
         user.setCreatedDate(LocalDateTime.now());
         userRepository.save(user);

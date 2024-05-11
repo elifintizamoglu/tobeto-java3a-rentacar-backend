@@ -38,28 +38,25 @@ public class ModelManager implements ModelService {
     public CreateModelResponse addModel(CreateModelRequest createModelRequest) {
 
         modelBusinessRules.modelNameCanNotBeDuplicated(createModelRequest.getName());
-
         brandBusinessRules.isBrandExists(createModelRequest.getBrandId());
         fuelBusinessRules.isFuelExists(createModelRequest.getFuelId());
         transmissionBusinessRules.isTransmissionExists(createModelRequest.getTransmissionId());
 
-        Model model = this.modelMapperService.forRequest()
-                .map(createModelRequest, Model.class);
-        model.setCreatedDate(LocalDateTime.now());
+        Model model = this.modelMapperService.forRequest().map(createModelRequest, Model.class);
+
         model.setId(0);
+        model.setCreatedDate(LocalDateTime.now());
         Model createdModel = this.modelRepository.save(model);
 
-        CreateModelResponse createdModelResponse = this.modelMapperService.forResponse()
-                .map(createdModel, CreateModelResponse.class);
+        CreateModelResponse createdModelResponse = this.modelMapperService.forResponse().map(createdModel, CreateModelResponse.class);
         return createdModelResponse;
     }
 
     @Override
     public List<GetAllModelResponse> getAllModels() {
 
-        var result = modelRepository.findAll();
-        List<GetAllModelResponse> response = result.stream()
-                .map(model -> modelMapperService.forResponse()
+        List<Model> models = modelRepository.findAll();
+        List<GetAllModelResponse> response = models.stream().map(model -> modelMapperService.forResponse()
                         .map(model, GetAllModelResponse.class)).collect(Collectors.toList());
 
         return response;
@@ -67,39 +64,34 @@ public class ModelManager implements ModelService {
 
     @Override
     public void deleteModelById(int id) {
-        Model model = modelRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(ModelMessages.ModelNotFound));
-        model.setDeletedDate(LocalDateTime.now());
-        modelRepository.delete(model);
+
+        modelBusinessRules.isModelExists(id);
+        modelRepository.deleteById(id);
     }
 
     @Override
     public UpdateModelResponse updateModelById(int id, UpdateModelRequest updateModelRequest) {
-        Model model = modelRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(ModelMessages.ModelNotFound));
+
+        Model model = modelRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(ModelMessages.ModelNotFound));
         Model updatedModel = modelMapperService.forRequest().map(updateModelRequest, Model.class);
 
-        model.setId(id);
-        model.setName(updatedModel.getName() != null ? updatedModel.getName() : model.getName());
-        model.setBrand(updatedModel.getBrand() != null ? updatedModel.getBrand() : model.getBrand());
-        model.setFuel(updatedModel.getFuel() != null ? updatedModel.getFuel() : model.getFuel());
-        model.setTransmission(updatedModel.getTransmission() != null ? updatedModel.getTransmission() : model.getTransmission());
-
+        model.setName(updatedModel.getName());
+        model.setBrand(updatedModel.getBrand());
+        model.setFuel(updatedModel.getFuel());
+        model.setTransmission(updatedModel.getTransmission());
         model.setUpdatedDate(LocalDateTime.now());
-
         modelRepository.save(model);
+
         UpdateModelResponse response = modelMapperService.forResponse().map(model, UpdateModelResponse.class);
         return response;
     }
 
     @Override
     public GetModelByIdResponse getModelById(int id) {
-        Model model = modelRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(ModelMessages.ModelNotFound));
 
-        GetModelByIdResponse response = modelMapperService.forResponse()
-                .map(model, GetModelByIdResponse.class);
+        Model model = modelRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(ModelMessages.ModelNotFound));
 
+        GetModelByIdResponse response = modelMapperService.forResponse().map(model, GetModelByIdResponse.class);
         return response;
     }
 }

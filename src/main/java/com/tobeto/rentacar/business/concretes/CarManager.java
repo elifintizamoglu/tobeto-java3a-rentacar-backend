@@ -33,47 +33,45 @@ public class CarManager implements CarService {
 
         carBusinessRules.carPlateCanNotBeDuplicated(createCarRequest.getPlate());
 
+        Car car = modelMapperService.forRequest().map(createCarRequest, Car.class);
 
-        Car car = this.modelMapperService.forRequest().map(createCarRequest, Car.class);
-        car.setCreatedDate(LocalDateTime.now());
         car.setId(0);
-        Car createdCar = this.carRepository.save(car);
+        car.setCreatedDate(LocalDateTime.now());
+        Car createdCar = carRepository.save(car);
 
-        CreateCarResponse createdCarResponse = this.modelMapperService.forResponse()
-                .map(createdCar, CreateCarResponse.class);
+        CreateCarResponse createdCarResponse = this.modelMapperService.forResponse().map(createdCar, CreateCarResponse.class);
         return createdCarResponse;
     }
 
     @Override
     public List<GetAllCarResponse> getAllCars() {
 
-        var result = carRepository.findAll();
-        List<GetAllCarResponse> response = result.stream()
-                .map(car -> modelMapperService.forResponse()
-                        .map(car, GetAllCarResponse.class)).collect(Collectors.toList());
+        List<Car> cars = carRepository.findAll();
 
+        List<GetAllCarResponse> response = cars.stream().map(car -> modelMapperService.forResponse()
+                        .map(car, GetAllCarResponse.class)).collect(Collectors.toList());
         return response;
     }
 
     @Override
     public void deleteCarById(int id) {
-        Car car = carRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException(CarMessages.CarNotFound));
-        car.setDeletedDate(LocalDateTime.now());
-        carRepository.delete(car);
+
+        carBusinessRules.isCarExists(id);
+        carRepository.deleteById(id);
     }
 
     @Override
     public UpdateCarResponse updateCarById(int id, UpdateCarRequest updateCarRequest) {
+
         Car car = carRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException(CarMessages.CarNotFound));
         Car updatedCar = modelMapperService.forRequest().map(updateCarRequest, Car.class);
 
+        car.setModelYear(updatedCar.getModelYear());
+        car.setPlate(updatedCar.getPlate());
+        car.setState(updatedCar.getState());
+        car.setDailyPrice(updatedCar.getDailyPrice());
+        car.setModel(updatedCar.getModel());
         car.setUpdatedDate(LocalDateTime.now());
-        car.setModelYear(updatedCar.getModelYear() != 0 ? updatedCar.getModelYear() : car.getModelYear());
-        car.setPlate(updatedCar.getPlate() != null ? updatedCar.getPlate() : car.getPlate());
-        car.setState(updatedCar.getState() != null ? updatedCar.getState() : car.getState());
-        car.setDailyPrice(updatedCar.getDailyPrice() != 0 ? updatedCar.getDailyPrice() : car.getDailyPrice());
-        car.setModel(updatedCar.getModel() != null ? updatedCar.getModel() : car.getModel());
-
         carRepository.save(car);
 
         UpdateCarResponse response = modelMapperService.forResponse().map(car, UpdateCarResponse.class);
@@ -82,7 +80,9 @@ public class CarManager implements CarService {
 
     @Override
     public GetCarByIdResponse getCarById(int id) {
+
         Car car = carRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException(CarMessages.CarNotFound));
+
         GetCarByIdResponse response = modelMapperService.forResponse().map(car, GetCarByIdResponse.class);
         return response;
     }

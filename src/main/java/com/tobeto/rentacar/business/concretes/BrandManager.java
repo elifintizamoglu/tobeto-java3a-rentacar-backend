@@ -6,7 +6,6 @@ import com.tobeto.rentacar.business.dtos.requests.brand.CreateBrandRequest;
 import com.tobeto.rentacar.business.dtos.requests.brand.UpdateBrandRequest;
 import com.tobeto.rentacar.business.dtos.responses.brand.CreateBrandResponse;
 import com.tobeto.rentacar.business.dtos.responses.brand.GetAllBrandResponse;
-
 import com.tobeto.rentacar.business.dtos.responses.brand.GetBrandByIdResponse;
 import com.tobeto.rentacar.business.dtos.responses.brand.UpdateBrandResponse;
 import com.tobeto.rentacar.business.rules.BrandBusinessRules;
@@ -45,9 +44,8 @@ public class BrandManager implements BrandService {
     @Override
     public List<GetAllBrandResponse> getAllBrands() {
 
-        var result = brandRepository.findAll();
-        List<GetAllBrandResponse> response = result.stream()
-                .map(brand -> modelMapperService.forResponse()
+        List<Brand> brands = brandRepository.findAll();
+        List<GetAllBrandResponse> response = brands.stream().map(brand -> modelMapperService.forResponse()
                         .map(brand, GetAllBrandResponse.class)).collect(Collectors.toList());
 
         return response;
@@ -55,35 +53,35 @@ public class BrandManager implements BrandService {
 
     @Override
     public void deleteBrandById(int id) {
-        Brand brand = brandRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException(BrandMessages.BrandNotFound));
-        brand.setDeletedDate(LocalDateTime.now());
-        brandRepository.delete(brand);
+
+        brandBusinessRules.isBrandExists(id);
+        brandRepository.deleteById(id);
     }
+
 
     @Override
     public UpdateBrandResponse updateBrandById(int id, UpdateBrandRequest updateBrandRequest) {
-        Brand brand = brandRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException(BrandMessages.BrandNotFound));
+
+        Brand brand = brandRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(BrandMessages.BrandNotFound));
+
+        brandBusinessRules.brandNameCanNotBeDuplicated(updateBrandRequest.getName());
+
         Brand updatedBrand = modelMapperService.forRequest().map(updateBrandRequest, Brand.class);
 
+        brand.setName(updatedBrand.getName());
         brand.setUpdatedDate(LocalDateTime.now());
-        brand.setName(updatedBrand.getName() != null ? updatedBrand.getName() : brand.getName());
         brandRepository.save(brand);
 
         UpdateBrandResponse response = modelMapperService.forResponse().map(brand, UpdateBrandResponse.class);
-
         return response;
     }
 
     @Override
     public GetBrandByIdResponse getBrandById(int id) {
-        Brand brand = brandRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException(BrandMessages.BrandNotFound));
 
-        GetBrandByIdResponse response = modelMapperService.forResponse()
-                .map(brand, GetBrandByIdResponse.class);
+        Brand brand = brandRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(BrandMessages.BrandNotFound));
 
+        GetBrandByIdResponse response = modelMapperService.forResponse().map(brand, GetBrandByIdResponse.class);
         return response;
     }
 }

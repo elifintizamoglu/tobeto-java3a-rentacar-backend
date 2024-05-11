@@ -44,9 +44,8 @@ public class FuelManager implements FuelService {
     @Override
     public List<GetAllFuelResponse> getAllFuels() {
 
-        var result = fuelRepository.findAll();
-        List<GetAllFuelResponse> response = result.stream()
-                .map(fuel -> modelMapperService.forResponse()
+        List<Fuel> fuels = fuelRepository.findAll();
+        List<GetAllFuelResponse> response = fuels.stream().map(fuel -> modelMapperService.forResponse()
                         .map(fuel, GetAllFuelResponse.class)).collect(Collectors.toList());
 
         return response;
@@ -54,25 +53,30 @@ public class FuelManager implements FuelService {
 
     @Override
     public void deleteFuelById(int id) {
-        Fuel fuel = fuelRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(FuelMessages.FuelNotFound));
-        fuel.setDeletedDate(LocalDateTime.now());
-        fuelRepository.delete(fuel);
+
+        fuelBusinessRules.isFuelExists(id);
+        fuelRepository.deleteById(id);
     }
 
     @Override
     public UpdateFuelResponse updateFuelById(int id, UpdateFuelRequest updateFuelRequest) {
+
         Fuel fuel = fuelRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(FuelMessages.FuelNotFound));
         Fuel updatedFuel = modelMapperService.forResponse().map(updateFuelRequest, Fuel.class);
+
+        fuel.setName(updatedFuel.getName());
         fuel.setUpdatedDate(LocalDateTime.now());
-        fuel.setName(updatedFuel.getName() != null ? updatedFuel.getName() : fuel.getName());
         fuelRepository.save(fuel);
+
         UpdateFuelResponse response = modelMapperService.forResponse().map(fuel, UpdateFuelResponse.class);
         return response;
     }
 
     @Override
     public GetFuelByIdResponse getFuelById(int id) {
+
         Fuel fuel = fuelRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(FuelMessages.FuelNotFound));
+
         GetFuelByIdResponse response = modelMapperService.forResponse().map(fuel, GetFuelByIdResponse.class);
         return response;
     }

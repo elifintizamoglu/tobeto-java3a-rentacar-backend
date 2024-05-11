@@ -17,8 +17,7 @@ public class TransmissionBusinessRules {
 
     public void transmissionNameCanNotBeDuplicated(String transmissionName) {
 
-        Optional<Transmission> transmission =
-                transmissionRepository.findByNameIgnoreCase(transmissionName);
+        Optional<Transmission> transmission = transmissionRepository.findByNameIgnoreCase(transmissionName);
         if (transmission.isPresent()) {
             throw new BusinessException(TransmissionMessages.TransmissionNameAlreadyExists);
         }
