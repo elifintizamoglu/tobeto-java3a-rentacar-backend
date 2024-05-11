@@ -49,7 +49,7 @@ public class CarManager implements CarService {
         List<Car> cars = carRepository.findAll();
 
         List<GetAllCarResponse> response = cars.stream().map(car -> modelMapperService.forResponse()
-                        .map(car, GetAllCarResponse.class)).collect(Collectors.toList());
+                .map(car, GetAllCarResponse.class)).collect(Collectors.toList());
         return response;
     }
 
@@ -63,7 +63,9 @@ public class CarManager implements CarService {
     @Override
     public UpdateCarResponse updateCarById(int id, UpdateCarRequest updateCarRequest) {
 
-        Car car = carRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException(CarMessages.CarNotFound));
+        Car car = carRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(CarMessages.CarNotFound));
+
+        carBusinessRules.carPlateCanNotBeDuplicated(updateCarRequest.getPlate());
         Car updatedCar = modelMapperService.forRequest().map(updateCarRequest, Car.class);
 
         car.setModelYear(updatedCar.getModelYear());
@@ -81,7 +83,7 @@ public class CarManager implements CarService {
     @Override
     public GetCarByIdResponse getCarById(int id) {
 
-        Car car = carRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException(CarMessages.CarNotFound));
+        Car car = carRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(CarMessages.CarNotFound));
 
         GetCarByIdResponse response = modelMapperService.forResponse().map(car, GetCarByIdResponse.class);
         return response;

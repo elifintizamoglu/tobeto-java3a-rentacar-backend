@@ -64,7 +64,6 @@ public class TransmissionManager implements TransmissionService {
         Transmission transmission = transmissionRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(TransmissionMessages.TransmissionNotFound));
 
         transmissionBusinessRules.transmissionNameCanNotBeDuplicated(request.getName());
-
         Transmission updatedTr = modelMapperService.forRequest().map(request, Transmission.class);
 
         transmission.setName(updatedTr.getName());

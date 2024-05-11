@@ -73,6 +73,12 @@ public class ModelManager implements ModelService {
     public UpdateModelResponse updateModelById(int id, UpdateModelRequest updateModelRequest) {
 
         Model model = modelRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(ModelMessages.ModelNotFound));
+
+        modelBusinessRules.modelNameCanNotBeDuplicated(updateModelRequest.getName());
+        brandBusinessRules.isBrandExists(updateModelRequest.getBrandId());
+        fuelBusinessRules.isFuelExists(updateModelRequest.getFuelId());
+        transmissionBusinessRules.isTransmissionExists(updateModelRequest.getTransmissionId());
+
         Model updatedModel = modelMapperService.forRequest().map(updateModelRequest, Model.class);
 
         model.setName(updatedModel.getName());

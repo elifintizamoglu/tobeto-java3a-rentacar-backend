@@ -65,7 +65,6 @@ public class BrandManager implements BrandService {
         Brand brand = brandRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(BrandMessages.BrandNotFound));
 
         brandBusinessRules.brandNameCanNotBeDuplicated(updateBrandRequest.getName());
-
         Brand updatedBrand = modelMapperService.forRequest().map(updateBrandRequest, Brand.class);
 
         brand.setName(updatedBrand.getName());

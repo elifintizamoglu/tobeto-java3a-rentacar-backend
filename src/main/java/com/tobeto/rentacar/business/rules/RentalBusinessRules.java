@@ -40,6 +40,10 @@ public class RentalBusinessRules {
 
     public double calculateTotalPrice(double dailyPrice, LocalDate startDate, LocalDate endDate) {
 
+        System.out.println(dailyPrice);
+        System.out.println(startDate);
+        System.out.println(endDate);
+
         long numberOfDays = ChronoUnit.DAYS.between(startDate, endDate);
         return dailyPrice * numberOfDays;
     }

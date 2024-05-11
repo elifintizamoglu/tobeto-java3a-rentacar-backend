@@ -62,6 +62,8 @@ public class FuelManager implements FuelService {
     public UpdateFuelResponse updateFuelById(int id, UpdateFuelRequest updateFuelRequest) {
 
         Fuel fuel = fuelRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(FuelMessages.FuelNotFound));
+
+        fuelBusinessRules.fuelNameCanNotBeDuplicated(updateFuelRequest.getName());
         Fuel updatedFuel = modelMapperService.forResponse().map(updateFuelRequest, Fuel.class);
 
         fuel.setName(updatedFuel.getName());

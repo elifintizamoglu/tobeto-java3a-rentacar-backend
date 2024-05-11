@@ -40,10 +40,12 @@ public class RentalManager implements RentalService {
         carBusinessRules.isCarExists(createRentalRequest.getCarId());
         userBusinessRules.isUserExists(createRentalRequest.getUserId());
         rentalBusinessRules.isCarAvailable(createRentalRequest.getCarId(), createRentalRequest.getStartDate(), createRentalRequest.getEndDate());
-        dailyPrice = carBusinessRules.getCarDailyPrice(createRentalRequest.getCarId());
-        totalPrice = rentalBusinessRules.calculateTotalPrice(dailyPrice, createRentalRequest.getStartDate(), createRentalRequest.getEndDate());
 
         Rental rental = modelMapperService.forRequest().map(createRentalRequest, Rental.class);
+
+        dailyPrice = carBusinessRules.getCarDailyPrice(rental.getCar().getId());
+        totalPrice = rentalBusinessRules.calculateTotalPrice(dailyPrice, rental.getStartDate(), rental.getEndDate());
+
         rental.setTotalPrice(totalPrice);
         rental.setCreatedDate(LocalDateTime.now());
         rentalRepository.save(rental);
@@ -79,10 +81,11 @@ public class RentalManager implements RentalService {
         carBusinessRules.isCarExists(request.getCarId());
         userBusinessRules.isUserExists(request.getUserId());
         rentalBusinessRules.isCarAvailable(request.getCarId(), request.getStartDate(), request.getEndDate());
-        dailyPrice = carBusinessRules.getCarDailyPrice(request.getCarId());
-        totalPrice = rentalBusinessRules.calculateTotalPrice(dailyPrice, request.getStartDate(), request.getEndDate());
 
         Rental updatedRental = modelMapperService.forRequest().map(request, Rental.class);
+
+        dailyPrice = carBusinessRules.getCarDailyPrice(updatedRental.getCar().getId());
+        totalPrice = rentalBusinessRules.calculateTotalPrice(dailyPrice, updatedRental.getStartDate(), updatedRental.getEndDate());
 
         rental.setCar(updatedRental.getCar());
         rental.setUser(updatedRental.getUser());

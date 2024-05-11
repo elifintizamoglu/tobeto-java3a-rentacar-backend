@@ -12,10 +12,7 @@ import java.time.LocalDate;
 public class CreateRentalResponse {
     private int id;
     private int carId;
-    private String carPlate;
     private int userId;
-    private String userFirstName;
-    private String userLastName;
     private LocalDate startDate;
     private LocalDate endDate;
     private double totalPrice;
