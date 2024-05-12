@@ -22,7 +22,7 @@ public class CreateRentalRequest {
     @FutureOrPresent(message = "Start date must be today or in the future.")
     private LocalDate startDate;
 
-    @NotNull(message = "Start date cannot be empty.")
-    @Future(message = "End date must be in the future.")
+    @NotNull(message = "End date cannot be empty.")
+    @FutureOrPresent(message = "End date must be today or in the future.")
     private LocalDate endDate;
 }

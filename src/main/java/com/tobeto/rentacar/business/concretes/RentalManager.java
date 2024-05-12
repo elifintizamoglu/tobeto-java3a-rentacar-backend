@@ -39,7 +39,7 @@ public class RentalManager implements RentalService {
 
         carBusinessRules.isCarExists(createRentalRequest.getCarId());
         userBusinessRules.isUserExists(createRentalRequest.getUserId());
-        rentalBusinessRules.isCarAvailable(createRentalRequest.getCarId(), createRentalRequest.getStartDate(), createRentalRequest.getEndDate());
+        rentalBusinessRules.isCarAvailable(0, createRentalRequest.getCarId(), createRentalRequest.getStartDate(), createRentalRequest.getEndDate());
 
         Rental rental = modelMapperService.forRequest().map(createRentalRequest, Rental.class);
 
@@ -80,7 +80,7 @@ public class RentalManager implements RentalService {
 
         carBusinessRules.isCarExists(request.getCarId());
         userBusinessRules.isUserExists(request.getUserId());
-        rentalBusinessRules.isCarAvailable(request.getCarId(), request.getStartDate(), request.getEndDate());
+        rentalBusinessRules.isCarAvailable(rental.getId(), request.getCarId(), request.getStartDate(), request.getEndDate());
 
         Rental updatedRental = modelMapperService.forRequest().map(request, Rental.class);
 

@@ -26,13 +26,13 @@ public class RentalBusinessRules {
         }
     }
 
-    public void isCarAvailable(int carId, LocalDate startDate, LocalDate endDate) {
+    public void isCarAvailable(int rentalId, int carId, LocalDate startDate, LocalDate endDate) {
 
-        if (!startDate.isBefore(endDate)) {
+        if (!(startDate.isBefore(endDate) || startDate.isEqual(endDate))) {
             throw new BusinessException(RentalMessages.DatesNotAppropriate);
         }
 
-        List<Rental> conflictingRentals = rentalRepository.findByCarIdAndDateRange(carId, startDate, endDate);
+        List<Rental> conflictingRentals = rentalRepository.findByCarIdAndDateRange(rentalId, carId, startDate, endDate);
         if (!conflictingRentals.isEmpty()) {
             throw new BusinessException(RentalMessages.CarNotAvailableForSelectedDates);
         }
@@ -40,7 +40,7 @@ public class RentalBusinessRules {
 
     public double calculateTotalPrice(double dailyPrice, LocalDate startDate, LocalDate endDate) {
 
-        long numberOfDays = ChronoUnit.DAYS.between(startDate, endDate);
+        double numberOfDays = (double) ChronoUnit.DAYS.between(startDate, endDate) + 1;
         return dailyPrice * numberOfDays;
     }
 }
