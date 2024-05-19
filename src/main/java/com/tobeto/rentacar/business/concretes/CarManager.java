@@ -4,10 +4,7 @@ import com.tobeto.rentacar.business.abstracts.CarService;
 import com.tobeto.rentacar.business.constants.CarMessages;
 import com.tobeto.rentacar.business.dtos.requests.car.CreateCarRequest;
 import com.tobeto.rentacar.business.dtos.requests.car.UpdateCarRequest;
-import com.tobeto.rentacar.business.dtos.responses.car.CreateCarResponse;
-import com.tobeto.rentacar.business.dtos.responses.car.GetAllCarResponse;
-import com.tobeto.rentacar.business.dtos.responses.car.GetCarByIdResponse;
-import com.tobeto.rentacar.business.dtos.responses.car.UpdateCarResponse;
+import com.tobeto.rentacar.business.dtos.responses.car.*;
 import com.tobeto.rentacar.business.rules.CarBusinessRules;
 import com.tobeto.rentacar.core.utilities.exceptions.types.ResourceNotFoundException;
 import com.tobeto.rentacar.core.utilities.mapping.ModelMapperService;
@@ -87,5 +84,11 @@ public class CarManager implements CarService {
 
         GetCarByIdResponse response = modelMapperService.forResponse().map(car, GetCarByIdResponse.class);
         return response;
+    }
+
+    @Override
+    public List<GetCarsByFiltersResponse> getCarsByFilters(Integer brandId, Integer modelId, Integer fuelId, Integer transmissionId) {
+
+        return carRepository.getCarsByFilters(brandId, modelId, fuelId, transmissionId);
     }
 }

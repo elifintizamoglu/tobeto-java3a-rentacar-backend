@@ -3,10 +3,7 @@ package com.tobeto.rentacar.api.controllers;
 import com.tobeto.rentacar.business.abstracts.CarService;
 import com.tobeto.rentacar.business.dtos.requests.car.CreateCarRequest;
 import com.tobeto.rentacar.business.dtos.requests.car.UpdateCarRequest;
-import com.tobeto.rentacar.business.dtos.responses.car.CreateCarResponse;
-import com.tobeto.rentacar.business.dtos.responses.car.GetAllCarResponse;
-import com.tobeto.rentacar.business.dtos.responses.car.GetCarByIdResponse;
-import com.tobeto.rentacar.business.dtos.responses.car.UpdateCarResponse;
+import com.tobeto.rentacar.business.dtos.responses.car.*;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -48,7 +45,18 @@ public class CarsController {
 
     @GetMapping(path = "getById/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
-    public GetCarByIdResponse getCarById(int id) {
+    public GetCarByIdResponse getCarById(@PathVariable int id) {
+        System.out.println(" a ");
         return carService.getCarById(id);
+    }
+
+    @GetMapping(path = "getByFilters", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    public List<GetCarsByFiltersResponse> getCarsByFilters(@RequestParam(required = false) Integer brandId,
+                                                           @RequestParam(required = false) Integer modelId,
+                                                           @RequestParam(required = false) Integer fuelId,
+                                                           @RequestParam(required = false) Integer transmissionId) {
+
+        return carService.getCarsByFilters(brandId, modelId, fuelId, transmissionId);
     }
 }

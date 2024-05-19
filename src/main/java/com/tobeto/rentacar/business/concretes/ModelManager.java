@@ -4,10 +4,7 @@ import com.tobeto.rentacar.business.abstracts.ModelService;
 import com.tobeto.rentacar.business.constants.ModelMessages;
 import com.tobeto.rentacar.business.dtos.requests.model.CreateModelRequest;
 import com.tobeto.rentacar.business.dtos.requests.model.UpdateModelRequest;
-import com.tobeto.rentacar.business.dtos.responses.model.CreateModelResponse;
-import com.tobeto.rentacar.business.dtos.responses.model.GetAllModelResponse;
-import com.tobeto.rentacar.business.dtos.responses.model.GetModelByIdResponse;
-import com.tobeto.rentacar.business.dtos.responses.model.UpdateModelResponse;
+import com.tobeto.rentacar.business.dtos.responses.model.*;
 import com.tobeto.rentacar.business.rules.BrandBusinessRules;
 import com.tobeto.rentacar.business.rules.FuelBusinessRules;
 import com.tobeto.rentacar.business.rules.ModelBusinessRules;
@@ -99,5 +96,15 @@ public class ModelManager implements ModelService {
 
         GetModelByIdResponse response = modelMapperService.forResponse().map(model, GetModelByIdResponse.class);
         return response;
+    }
+
+    @Override
+    public List<GetModelsByBrandIdResponse> getModelsByBrandId(int id) {
+        List<Model> models = modelRepository.getModelsByBrandId(id);
+        List<GetModelsByBrandIdResponse> response = models.stream().map(model -> modelMapperService.forResponse()
+                .map(model, GetModelsByBrandIdResponse.class)).collect(Collectors.toList());
+
+        return response;
+
     }
 }

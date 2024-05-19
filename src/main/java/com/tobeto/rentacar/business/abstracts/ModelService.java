@@ -2,10 +2,7 @@ package com.tobeto.rentacar.business.abstracts;
 
 import com.tobeto.rentacar.business.dtos.requests.model.CreateModelRequest;
 import com.tobeto.rentacar.business.dtos.requests.model.UpdateModelRequest;
-import com.tobeto.rentacar.business.dtos.responses.model.CreateModelResponse;
-import com.tobeto.rentacar.business.dtos.responses.model.GetAllModelResponse;
-import com.tobeto.rentacar.business.dtos.responses.model.GetModelByIdResponse;
-import com.tobeto.rentacar.business.dtos.responses.model.UpdateModelResponse;
+import com.tobeto.rentacar.business.dtos.responses.model.*;
 
 import java.util.List;
 
@@ -21,6 +18,7 @@ public interface ModelService {
 
     GetModelByIdResponse getModelById(int id);
 
+    List<GetModelsByBrandIdResponse> getModelsByBrandId(int id);
 
 
 }
