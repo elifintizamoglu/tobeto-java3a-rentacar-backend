@@ -9,12 +9,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class GetAllCarResponse {
-
     private int id;
     private int modelYear;
     private String plate;
     private CarState state;
     private double dailyPrice;
-    private int modelId;
+    private String brandName;
     private String modelName;
+    private String fuelName;
+    private String transmissionName;
 }

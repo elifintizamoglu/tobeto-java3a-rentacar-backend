@@ -89,6 +89,10 @@ public class CarManager implements CarService {
     @Override
     public List<GetCarsByFiltersResponse> getCarsByFilters(Integer brandId, Integer modelId, Integer fuelId, Integer transmissionId) {
 
-        return carRepository.getCarsByFilters(brandId, modelId, fuelId, transmissionId);
+        List<Car> cars = carRepository.getCarsByFilters(brandId, modelId, fuelId, transmissionId);
+
+        List<GetCarsByFiltersResponse> response = cars.stream().map(car -> modelMapperService.forResponse()
+                .map(car, GetCarsByFiltersResponse.class)).collect(Collectors.toList());
+        return response;
     }
 }

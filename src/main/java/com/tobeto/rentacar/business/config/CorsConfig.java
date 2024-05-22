@@ -1,4 +1,4 @@
-package com.tobeto.rentacar.core.utilities.config;
+package com.tobeto.rentacar.business.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
