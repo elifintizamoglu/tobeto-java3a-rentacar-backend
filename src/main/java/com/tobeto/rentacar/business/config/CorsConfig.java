@@ -9,9 +9,9 @@ public class CorsConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/api/**")  // İzin verilecek API yollarını belirtin
-                .allowedOrigins("http://localhost:4200")  // İzin verilecek origin (frontend URL)
-                .allowedMethods("GET", "POST", "PUT", "DELETE")  // İzin verilecek HTTP metotları
+        registry.addMapping("/api/**")
+                .allowedOrigins("http://localhost:4200")
+                .allowedMethods("GET", "POST", "PUT", "DELETE")
                 .allowCredentials(true);
 
     }
