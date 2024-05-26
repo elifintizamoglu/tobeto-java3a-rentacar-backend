@@ -1,6 +1,6 @@
 package com.tobeto.rentacar.business.dtos.requests.car;
 
-import com.tobeto.rentacar.entities.concretes.CarState;
+import com.tobeto.rentacar.entities.concretes.enums.CarState;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

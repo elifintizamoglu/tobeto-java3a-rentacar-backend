@@ -1,4 +1,4 @@
-package com.tobeto.rentacar.entities.concretes;
+package com.tobeto.rentacar.entities.concretes.enums;
 
 public enum CarState {
     AVAILABLE,

@@ -1,6 +1,7 @@
 package com.tobeto.rentacar.entities.concretes;
 
 import com.tobeto.rentacar.core.entities.BaseEntity;
+import com.tobeto.rentacar.entities.concretes.enums.CarState;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

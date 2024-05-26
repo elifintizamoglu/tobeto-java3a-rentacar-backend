@@ -1,6 +1,7 @@
 package com.tobeto.rentacar.entities.concretes;
 
 import com.tobeto.rentacar.core.entities.BaseEntity;
+import com.tobeto.rentacar.entities.concretes.enums.Role;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,7 +15,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.security.Principal;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -43,12 +43,12 @@ public class User extends BaseEntity implements UserDetails, Principal {
     @Column(name = "enabled")
     private boolean enabled;
 
-    @ManyToMany(fetch = FetchType.EAGER) // when I fetch the user, I want to eagerly fetch list of roles
-    private List<Role> roles;
+    @Column(name = "role")
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @OneToMany(mappedBy = "user")
     private List<Rental> rentals;
-
 
     @Override
     public String getName() {
@@ -57,10 +57,7 @@ public class User extends BaseEntity implements UserDetails, Principal {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.roles
-                .stream()
-                .map(role -> new SimpleGrantedAuthority(role.getName()))
-                .collect(Collectors.toList());
+        return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
     @Override
