@@ -16,4 +16,6 @@ public class GetCarByIdResponse {
     private double dailyPrice;
     private int modelId;
     private String modelName;
+    private String fuelName;
+    private String transmissionName;
 }

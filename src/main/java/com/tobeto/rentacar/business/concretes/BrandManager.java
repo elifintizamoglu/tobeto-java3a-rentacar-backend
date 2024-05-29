@@ -34,7 +34,7 @@ public class BrandManager implements BrandService {
         brandBusinessRules.brandNameCanNotBeDuplicated(createBrandRequest.getName());
 
         Brand brand = this.modelMapperService.forRequest().map(createBrandRequest, Brand.class);
-        //brand.setCreatedDate(LocalDateTime.now());
+        brand.setCreatedDate(LocalDateTime.now());
         Brand createdBrand = this.brandRepository.save(brand);
 
         CreateBrandResponse createdBrandResponse = this.modelMapperService.forResponse().map(createdBrand, CreateBrandResponse.class);

@@ -1,5 +1,6 @@
 package com.tobeto.rentacar.security;
 
+import com.tobeto.rentacar.entities.concretes.enums.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,23 +30,11 @@ public class SecurityConfig {
                 .cors(withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req ->
-                        req.requestMatchers(
-                                        "api/v1/**",
-                                        "/v2/api-docs",
-                                        "/v3/api-docs",
-                                        "/v3/api-docs/**",
-                                        "/swagger-resources",
-                                        "/swagger-resources/**",
-                                        "/configuration/ui",
-                                        "/configuration/security",
-                                        "/swagger-ui/**",
-                                        "/webjars/**",
-                                        "/swagger-ui/index.html"
-                                )
-                                .permitAll()
-                                .anyRequest()
-                                .authenticated()
-                )
+                        req.requestMatchers("/**").permitAll()
+                                .requestMatchers("/api/admin/**").hasAnyAuthority(Role.ADMIN.name())
+                                .requestMatchers("/api/user/**").hasAnyAuthority(Role.USER.name())
+                                .requestMatchers("/v3/**", "/swagger-ui/**").permitAll()
+                                .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);

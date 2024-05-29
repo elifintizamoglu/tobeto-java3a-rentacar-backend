@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/brands")
+@RequestMapping(path = "api/v1/brands", produces = MediaType.APPLICATION_JSON_VALUE)
 @AllArgsConstructor
 public class BrandsController {
 
@@ -28,7 +28,7 @@ public class BrandsController {
         return brandService.addBrand(createBrandRequest);
     }
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<GetAllBrandResponse> getAllBrands() {
         return brandService.getAllBrands();
@@ -40,13 +40,13 @@ public class BrandsController {
         brandService.deleteBrandById(id);
     }
 
-    @PutMapping("update/{id}")
+    @PutMapping(path = "update/{id}")
     @ResponseStatus(HttpStatus.OK)
     public UpdateBrandResponse updateBrandById(@PathVariable int id, @RequestBody @Valid UpdateBrandRequest updateBrandRequest) {
         return brandService.updateBrandById(id, updateBrandRequest);
     }
 
-    @GetMapping(path = "getById/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "getById/{id}")
     @ResponseStatus(HttpStatus.OK)
     public GetBrandByIdResponse getBrandById(@PathVariable int id) {
         return brandService.getBrandById(id);

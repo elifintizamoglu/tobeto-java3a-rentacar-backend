@@ -3,10 +3,7 @@ package com.tobeto.rentacar.api.controllers;
 import com.tobeto.rentacar.business.abstracts.UserService;
 import com.tobeto.rentacar.business.dtos.requests.user.CreateUserRequest;
 import com.tobeto.rentacar.business.dtos.requests.user.UpdateUserRequest;
-import com.tobeto.rentacar.business.dtos.responses.user.CreateUserResponse;
-import com.tobeto.rentacar.business.dtos.responses.user.GetAllUserResponse;
-import com.tobeto.rentacar.business.dtos.responses.user.GetUserByIdResponse;
-import com.tobeto.rentacar.business.dtos.responses.user.UpdateUserResponse;
+import com.tobeto.rentacar.business.dtos.responses.user.*;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/users")
+@RequestMapping(path = "api/v1/users", produces = MediaType.APPLICATION_JSON_VALUE)
 @AllArgsConstructor
 public class UsersController {
 
@@ -28,7 +25,7 @@ public class UsersController {
         return userService.addUser(createUserRequest);
     }
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<GetAllUserResponse> getAllUsers() {
         return userService.getAllUsers();
@@ -46,9 +43,15 @@ public class UsersController {
         return userService.updateUserById(id, updateUserRequest);
     }
 
-    @GetMapping(path = "getById/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "getById/{id}")
     @ResponseStatus(HttpStatus.OK)
     public GetUserByIdResponse getUserById(@PathVariable int id) {
         return userService.getUserById(id);
+    }
+
+    @GetMapping(path = "getByEmail/{email}")
+    @ResponseStatus(HttpStatus.OK)
+    public GetUserByEmailResponse getUserByEmail(@PathVariable String email){
+        return userService.getUserByEmail(email);
     }
 }

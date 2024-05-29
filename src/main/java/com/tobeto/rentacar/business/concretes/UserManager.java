@@ -4,10 +4,7 @@ import com.tobeto.rentacar.business.abstracts.UserService;
 import com.tobeto.rentacar.business.constants.UserMessages;
 import com.tobeto.rentacar.business.dtos.requests.user.CreateUserRequest;
 import com.tobeto.rentacar.business.dtos.requests.user.UpdateUserRequest;
-import com.tobeto.rentacar.business.dtos.responses.user.CreateUserResponse;
-import com.tobeto.rentacar.business.dtos.responses.user.GetAllUserResponse;
-import com.tobeto.rentacar.business.dtos.responses.user.GetUserByIdResponse;
-import com.tobeto.rentacar.business.dtos.responses.user.UpdateUserResponse;
+import com.tobeto.rentacar.business.dtos.responses.user.*;
 import com.tobeto.rentacar.business.rules.UserBusinessRules;
 import com.tobeto.rentacar.core.utilities.exceptions.types.ResourceNotFoundException;
 import com.tobeto.rentacar.core.utilities.mapping.ModelMapperService;
@@ -81,6 +78,13 @@ public class UserManager implements UserService {
     public GetUserByIdResponse getUserById(int id) {
         User user = userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(UserMessages.UserNotFound));
         GetUserByIdResponse response = modelMapperService.forResponse().map(user, GetUserByIdResponse.class);
+        return response;
+    }
+
+    @Override
+    public GetUserByEmailResponse getUserByEmail(String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException(UserMessages.UserNotFound));
+        GetUserByEmailResponse response = modelMapperService.forResponse().map(user, GetUserByEmailResponse.class);
         return response;
     }
 }

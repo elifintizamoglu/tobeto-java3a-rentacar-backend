@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/transmissions")
+@RequestMapping(path = "api/v1/transmissions", produces = MediaType.APPLICATION_JSON_VALUE)
 @AllArgsConstructor
 public class TransmissionsController {
 
@@ -28,7 +28,7 @@ public class TransmissionsController {
         return transmissionService.addTransmission(createTransmissionRequest);
     }
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<GetAllTransmissionResponse> getAllTransmissions() {
         return transmissionService.getAllTransmissions();
@@ -46,7 +46,7 @@ public class TransmissionsController {
         return transmissionService.updateTransmissionById(id, updateTransmissionRequest);
     }
 
-    @GetMapping(path = "getById/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "getById/{id}")
     @ResponseStatus(HttpStatus.OK)
     public GetTransmissionByIdResponse getTransmissionById(@PathVariable int id) {
         return transmissionService.getTransmissionById(id);

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/fuels")
+@RequestMapping(path = "api/v1/fuels", produces = MediaType.APPLICATION_JSON_VALUE)
 @AllArgsConstructor
 public class FuelsController {
 
@@ -28,7 +28,7 @@ public class FuelsController {
         return fuelService.addFuel(createFuelRequest);
     }
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<GetAllFuelResponse> getAllFuels() {
         return fuelService.getAllFuels();
@@ -46,7 +46,7 @@ public class FuelsController {
         return fuelService.updateFuelById(id, updateFuelRequest);
     }
 
-    @GetMapping(path = "getById/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "getById/{id}")
     @ResponseStatus(HttpStatus.OK)
     public GetFuelByIdResponse getFuelById(@PathVariable int id) {
         return fuelService.getFuelById(id);

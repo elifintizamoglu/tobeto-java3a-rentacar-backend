@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/rentals")
+@RequestMapping(path = "api/v1/rentals", produces = MediaType.APPLICATION_JSON_VALUE)
 @AllArgsConstructor
 public class RentalsController {
 
@@ -28,7 +28,7 @@ public class RentalsController {
         return rentalService.addRental(createRentalRequest);
     }
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<GetAllRentalResponse> getAllRentals() {
         return rentalService.getAllRentals();
@@ -46,7 +46,7 @@ public class RentalsController {
         return rentalService.updateRentalById(id, updateRentalRequest);
     }
 
-    @GetMapping(path = "getById/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "getById/{id}")
     @ResponseStatus(HttpStatus.OK)
     public GetRentalByIdResponse getRentalById(@PathVariable int id) {
         return rentalService.getRentalById(id);

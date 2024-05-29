@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/cars")
+@RequestMapping(path = "api/v1/cars", produces = MediaType.APPLICATION_JSON_VALUE)
 @AllArgsConstructor
 public class CarsController {
 
@@ -25,7 +25,7 @@ public class CarsController {
         return carService.addCar(createCarRequest);
     }
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<GetAllCarResponse> getAllCars() {
         return carService.getAllCars();
@@ -43,14 +43,13 @@ public class CarsController {
         return carService.updateCarById(id, updateCarRequest);
     }
 
-    @GetMapping(path = "getById/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "getById/{id}")
     @ResponseStatus(HttpStatus.OK)
     public GetCarByIdResponse getCarById(@PathVariable int id) {
-        System.out.println(" a ");
         return carService.getCarById(id);
     }
 
-    @GetMapping(path = "getByFilters", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "getByFilters")
     @ResponseStatus(HttpStatus.OK)
     public List<GetCarsByFiltersResponse> getCarsByFilters(@RequestParam(required = false) Integer brandId,
                                                            @RequestParam(required = false) Integer modelId,

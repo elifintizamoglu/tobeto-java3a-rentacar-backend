@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/models")
+@RequestMapping(path = "api/v1/models", produces = MediaType.APPLICATION_JSON_VALUE)
 @AllArgsConstructor
 public class ModelsController {
 
@@ -25,7 +25,7 @@ public class ModelsController {
         return modelService.addModel(createModelRequest);
     }
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<GetAllModelResponse> getAllModels() {
         return modelService.getAllModels();
@@ -49,7 +49,7 @@ public class ModelsController {
         return modelService.getModelById(id);
     }
 
-    @GetMapping(path = "getByBrandId/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "getByBrandId/{id}")
     @ResponseStatus(HttpStatus.OK)
     public List<GetModelsByBrandIdResponse> getModelsByBrandId(@PathVariable int id) {
         return modelService.getModelsByBrandId(id);
