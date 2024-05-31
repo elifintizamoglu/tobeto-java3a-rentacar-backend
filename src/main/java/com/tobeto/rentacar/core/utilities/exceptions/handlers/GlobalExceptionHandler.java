@@ -36,6 +36,7 @@ public class GlobalExceptionHandler {
 
         ValidationProblemDetails validationProblemDetails = new ValidationProblemDetails();
         validationProblemDetails.setErrors(validationErrors);
+        validationProblemDetails.setDetail(exception.getMessage());
         return validationProblemDetails;
     }
 

@@ -14,8 +14,10 @@ public class GetCarByIdResponse {
     private String plate;
     private CarState state;
     private double dailyPrice;
+    private String imagePath;
     private int modelId;
     private String modelName;
+    private String brandName;
     private String fuelName;
     private String transmissionName;
 }

@@ -11,7 +11,11 @@ import java.time.LocalDate;
 @Data
 public class GetRentalByIdResponse {
     private int id;
+    private int carId;
     private String carPlate;
+    private String brandName;
+    private String modelName;
+    private int userId;
     private String userFirstName;
     private String userLastName;
     private LocalDate startDate;

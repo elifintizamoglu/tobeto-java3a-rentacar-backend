@@ -15,6 +15,7 @@ public class GetCarsByFiltersResponse {
     private String plate;
     private CarState state;
     private double dailyPrice;
+    private String imagePath;
     private String brandName;
     private String modelName;
     private String fuelName;

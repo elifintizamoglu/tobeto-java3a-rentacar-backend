@@ -29,6 +29,9 @@ public class Car extends BaseEntity {
     @Column(name = "dailyPrice")
     private double dailyPrice;
 
+    @Column(name = "imagePath")
+    private String imagePath;
+
     @ManyToOne
     @JoinColumn(name = "modelId")
     private Model model;

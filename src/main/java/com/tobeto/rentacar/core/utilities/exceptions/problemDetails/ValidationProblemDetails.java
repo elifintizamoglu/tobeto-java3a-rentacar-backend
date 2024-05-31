@@ -8,7 +8,6 @@ import java.util.Map;
 public class ValidationProblemDetails extends ProblemDetails {
     public ValidationProblemDetails() {
         setTitle("Validation Rule Violation");
-        setDetail("Validation Problem");
         setType("http://mydomain.com/exceptions/validation");
         setStatus("400");
     }
