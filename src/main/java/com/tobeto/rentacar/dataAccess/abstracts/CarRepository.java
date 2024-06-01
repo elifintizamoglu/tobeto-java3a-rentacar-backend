@@ -21,8 +21,5 @@ public interface CarRepository extends JpaRepository<Car, Integer> {
             "AND (:modelId IS NULL OR m.id = :modelId) " +
             "AND (:fuelId IS NULL OR f.id = :fuelId) " +
             "AND (:transmissionId IS NULL OR t.id = :transmissionId)")
-    List<Car> getCarsByFilters(Integer brandId,
-                               Integer modelId,
-                               Integer fuelId,
-                               Integer transmissionId);
+    List<Car> getCarsByFilters(Integer brandId, Integer modelId, Integer fuelId, Integer transmissionId);
 }

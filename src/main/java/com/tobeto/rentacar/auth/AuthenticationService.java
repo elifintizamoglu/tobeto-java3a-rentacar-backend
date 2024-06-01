@@ -28,7 +28,6 @@ public class AuthenticationService {
     private String activationUrl;
 
     public void register(RegistrationRequest request) {
-        //var userRole = userRepository.findByRole(Role.USER);
         var user = User.builder()
                 .firstName(request.getFirstname())
                 .lastName(request.getLastname())
