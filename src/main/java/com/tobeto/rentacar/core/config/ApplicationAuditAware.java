@@ -1,4 +1,4 @@
-package com.tobeto.rentacar.config;
+package com.tobeto.rentacar.core.config;
 
 import com.tobeto.rentacar.entities.concretes.User;
 import org.springframework.data.domain.AuditorAware;

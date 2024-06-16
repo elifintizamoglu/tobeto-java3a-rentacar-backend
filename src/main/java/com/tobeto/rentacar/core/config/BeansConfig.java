@@ -1,4 +1,4 @@
-package com.tobeto.rentacar.config;
+package com.tobeto.rentacar.core.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

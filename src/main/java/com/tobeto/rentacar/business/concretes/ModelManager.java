@@ -34,7 +34,7 @@ public class ModelManager implements ModelService {
     @Override
     public CreateModelResponse addModel(CreateModelRequest createModelRequest) {
 
-        modelBusinessRules.modelNameCanNotBeDuplicated(createModelRequest.getName());
+        modelBusinessRules.modelNameCanNotBeDuplicated(0, createModelRequest.getBrandId(), createModelRequest.getName());
         brandBusinessRules.isBrandExists(createModelRequest.getBrandId());
         fuelBusinessRules.isFuelExists(createModelRequest.getFuelId());
         transmissionBusinessRules.isTransmissionExists(createModelRequest.getTransmissionId());
@@ -52,9 +52,9 @@ public class ModelManager implements ModelService {
     @Override
     public List<GetAllModelResponse> getAllModels() {
 
-        List<Model> models = modelRepository.findAll();
+        List<Model> models = modelRepository.findAllByOrderByBrandNameAscNameAsc();
         List<GetAllModelResponse> response = models.stream().map(model -> modelMapperService.forResponse()
-                        .map(model, GetAllModelResponse.class)).collect(Collectors.toList());
+                .map(model, GetAllModelResponse.class)).collect(Collectors.toList());
 
         return response;
     }
@@ -71,7 +71,7 @@ public class ModelManager implements ModelService {
 
         Model model = modelRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(ModelMessages.ModelNotFound));
 
-        modelBusinessRules.modelNameCanNotBeDuplicated(updateModelRequest.getName());
+        modelBusinessRules.modelNameCanNotBeDuplicated(id, updateModelRequest.getBrandId(), updateModelRequest.getName());
         brandBusinessRules.isBrandExists(updateModelRequest.getBrandId());
         fuelBusinessRules.isFuelExists(updateModelRequest.getFuelId());
         transmissionBusinessRules.isTransmissionExists(updateModelRequest.getTransmissionId());

@@ -14,6 +14,7 @@ import com.tobeto.rentacar.core.utilities.mapping.ModelMapperService;
 import com.tobeto.rentacar.dataAccess.abstracts.BrandRepository;
 import com.tobeto.rentacar.entities.concretes.Brand;
 import lombok.AllArgsConstructor;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
+@Primary
 public class BrandManager implements BrandService {
 
     private BrandRepository brandRepository;
@@ -44,7 +46,7 @@ public class BrandManager implements BrandService {
     @Override
     public List<GetAllBrandResponse> getAllBrands() {
 
-        List<Brand> brands = brandRepository.findAll();
+        List<Brand> brands = brandRepository.findAllByOrderByName();
         List<GetAllBrandResponse> response = brands.stream().map(brand -> modelMapperService.forResponse()
                         .map(brand, GetAllBrandResponse.class)).collect(Collectors.toList());
 

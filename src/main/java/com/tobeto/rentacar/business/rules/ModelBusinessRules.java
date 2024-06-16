@@ -16,10 +16,10 @@ public class ModelBusinessRules {
 
     ModelRepository modelRepository;
 
-    public void modelNameCanNotBeDuplicated(String modelName) {
+    public void modelNameCanNotBeDuplicated(int modelId, int brandId, String modelName) {
 
         String trimmedName = modelName.trim();
-        Optional<Model> model = modelRepository.findByNameIgnoreCase(trimmedName);
+        Optional<Model> model = modelRepository.findByNameAndBrandIdIgnoreCase(modelId, brandId, trimmedName);
 
         if (model.isPresent()) {
             throw new BusinessException(ModelMessages.ModelNameAlreadyExists);
