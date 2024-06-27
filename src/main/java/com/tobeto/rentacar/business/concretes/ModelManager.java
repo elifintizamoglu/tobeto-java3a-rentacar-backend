@@ -11,9 +11,11 @@ import com.tobeto.rentacar.business.rules.ModelBusinessRules;
 import com.tobeto.rentacar.business.rules.TransmissionBusinessRules;
 import com.tobeto.rentacar.core.utilities.exceptions.types.ResourceNotFoundException;
 import com.tobeto.rentacar.core.utilities.mapping.ModelMapperService;
+import com.tobeto.rentacar.core.utilities.results.Result;
 import com.tobeto.rentacar.dataAccess.abstracts.ModelRepository;
 import com.tobeto.rentacar.entities.concretes.Model;
 import lombok.AllArgsConstructor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -60,10 +62,16 @@ public class ModelManager implements ModelService {
     }
 
     @Override
-    public void deleteModelById(int id) {
+    public Result deleteModelById(int id) {
 
         modelBusinessRules.isModelExists(id);
-        modelRepository.deleteById(id);
+
+        try {
+            modelRepository.deleteById(id);
+            return new Result(true, ModelMessages.ModelDeleted);
+        } catch (DataIntegrityViolationException exception) {
+            return new Result(false, ModelMessages.ModelIsRelatedCanNotBeDeleted);
+        }
     }
 
     @Override

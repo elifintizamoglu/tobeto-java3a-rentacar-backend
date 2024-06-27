@@ -6,6 +6,7 @@ import com.tobeto.rentacar.business.dtos.responses.brand.CreateBrandResponse;
 import com.tobeto.rentacar.business.dtos.responses.brand.GetAllBrandResponse;
 import com.tobeto.rentacar.business.dtos.responses.brand.GetBrandByIdResponse;
 import com.tobeto.rentacar.business.dtos.responses.brand.UpdateBrandResponse;
+import com.tobeto.rentacar.core.utilities.results.Result;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ public interface BrandService {
 
     List<GetAllBrandResponse> getAllBrands();
 
-    void deleteBrandById(int id);
+    Result deleteBrandById(int id);
 
     UpdateBrandResponse updateBrandById(int id, UpdateBrandRequest updateBrandRequest);
 

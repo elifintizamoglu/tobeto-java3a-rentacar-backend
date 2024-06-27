@@ -7,10 +7,12 @@ import com.tobeto.rentacar.business.dtos.responses.brand.CreateBrandResponse;
 import com.tobeto.rentacar.business.dtos.responses.brand.GetAllBrandResponse;
 import com.tobeto.rentacar.business.dtos.responses.brand.GetBrandByIdResponse;
 import com.tobeto.rentacar.business.dtos.responses.brand.UpdateBrandResponse;
+import com.tobeto.rentacar.core.utilities.results.Result;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,8 +38,15 @@ public class BrandsController {
 
     @DeleteMapping("delete/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteBrandById(@PathVariable int id) {
-        brandService.deleteBrandById(id);
+    public ResponseEntity<Result> deleteBrandById(@PathVariable int id) {
+
+        Result result = brandService.deleteBrandById(id);
+
+        if (result.isSuccess()) {
+            return ResponseEntity.ok(result);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
+        }
     }
 
     @PutMapping(path = "update/{id}")

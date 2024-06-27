@@ -11,10 +11,12 @@ import com.tobeto.rentacar.business.dtos.responses.brand.UpdateBrandResponse;
 import com.tobeto.rentacar.business.rules.BrandBusinessRules;
 import com.tobeto.rentacar.core.utilities.exceptions.types.ResourceNotFoundException;
 import com.tobeto.rentacar.core.utilities.mapping.ModelMapperService;
+import com.tobeto.rentacar.core.utilities.results.Result;
 import com.tobeto.rentacar.dataAccess.abstracts.BrandRepository;
 import com.tobeto.rentacar.entities.concretes.Brand;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Primary;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -48,18 +50,23 @@ public class BrandManager implements BrandService {
 
         List<Brand> brands = brandRepository.findAllByOrderByName();
         List<GetAllBrandResponse> response = brands.stream().map(brand -> modelMapperService.forResponse()
-                        .map(brand, GetAllBrandResponse.class)).collect(Collectors.toList());
+                .map(brand, GetAllBrandResponse.class)).collect(Collectors.toList());
 
         return response;
     }
 
     @Override
-    public void deleteBrandById(int id) {
+    public Result deleteBrandById(int id) {
 
         brandBusinessRules.isBrandExists(id);
-        brandRepository.deleteById(id);
-    }
 
+        try {
+            brandRepository.deleteById(id);
+            return new Result(true, BrandMessages.BrandDeleted);
+        } catch (DataIntegrityViolationException exception) {
+            return new Result(false, BrandMessages.BrandIsRelatedCanNotBeDeleted);
+        }
+    }
 
     @Override
     public UpdateBrandResponse updateBrandById(int id, UpdateBrandRequest updateBrandRequest) {

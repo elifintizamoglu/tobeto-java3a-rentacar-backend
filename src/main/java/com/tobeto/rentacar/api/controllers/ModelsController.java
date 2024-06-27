@@ -4,10 +4,12 @@ import com.tobeto.rentacar.business.abstracts.ModelService;
 import com.tobeto.rentacar.business.dtos.requests.model.CreateModelRequest;
 import com.tobeto.rentacar.business.dtos.requests.model.UpdateModelRequest;
 import com.tobeto.rentacar.business.dtos.responses.model.*;
+import com.tobeto.rentacar.core.utilities.results.Result;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,10 +33,17 @@ public class ModelsController {
         return modelService.getAllModels();
     }
 
-    @DeleteMapping("delete/{id}")
+    @DeleteMapping(path = "delete/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteModelById(@PathVariable int id) {
-        modelService.deleteModelById(id);
+    public ResponseEntity<Result> deleteModelById(@PathVariable int id) {
+
+        Result result = modelService.deleteModelById(id);
+
+        if (result.isSuccess()) {
+            return ResponseEntity.ok(result);
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
+        }
     }
 
     @PutMapping("update/{id}")
