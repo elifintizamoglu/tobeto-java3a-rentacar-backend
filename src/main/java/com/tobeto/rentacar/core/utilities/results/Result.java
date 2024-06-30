@@ -1,5 +1,10 @@
 package com.tobeto.rentacar.core.utilities.results;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class Result {
     private boolean success;
     private String message;
@@ -12,13 +17,4 @@ public class Result {
         this(success);
         this.message = message;
     }
-
-    public boolean isSuccess() {
-        return success;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
 }

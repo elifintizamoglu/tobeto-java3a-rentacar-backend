@@ -4,7 +4,6 @@ import com.tobeto.rentacar.business.abstracts.RentalService;
 import com.tobeto.rentacar.business.constants.RentalMessages;
 import com.tobeto.rentacar.business.dtos.requests.rental.CreateRentalRequest;
 import com.tobeto.rentacar.business.dtos.requests.rental.UpdateRentalRequest;
-import com.tobeto.rentacar.business.dtos.responses.rental.CreateRentalResponse;
 import com.tobeto.rentacar.business.dtos.responses.rental.GetAllRentalResponse;
 import com.tobeto.rentacar.business.dtos.responses.rental.GetRentalByIdResponse;
 import com.tobeto.rentacar.business.dtos.responses.rental.UpdateRentalResponse;
@@ -13,6 +12,7 @@ import com.tobeto.rentacar.business.rules.RentalBusinessRules;
 import com.tobeto.rentacar.business.rules.UserBusinessRules;
 import com.tobeto.rentacar.core.utilities.exceptions.types.ResourceNotFoundException;
 import com.tobeto.rentacar.core.utilities.mapping.ModelMapperService;
+import com.tobeto.rentacar.core.utilities.results.Result;
 import com.tobeto.rentacar.dataAccess.abstracts.RentalRepository;
 import com.tobeto.rentacar.entities.concretes.Rental;
 import lombok.AllArgsConstructor;
@@ -32,26 +32,35 @@ public class RentalManager implements RentalService {
     private UserBusinessRules userBusinessRules;
     private RentalBusinessRules rentalBusinessRules;
 
-    @Override
-    public CreateRentalResponse addRental(CreateRentalRequest createRentalRequest) {
-
-        double dailyPrice, totalPrice;
+    public Result checkAvailability(CreateRentalRequest createRentalRequest) {
 
         carBusinessRules.isCarExists(createRentalRequest.getCarId());
         userBusinessRules.isUserExists(createRentalRequest.getUserId());
-        rentalBusinessRules.isCarAvailable(0, createRentalRequest.getCarId(), createRentalRequest.getStartDate(), createRentalRequest.getEndDate());
+        return rentalBusinessRules.isCarAvailable(0, createRentalRequest.getCarId(), createRentalRequest.getStartDate(), createRentalRequest.getEndDate());
+    }
 
-        Rental rental = modelMapperService.forRequest().map(createRentalRequest, Rental.class);
+    @Override
+    public Result addRental(CreateRentalRequest createRentalRequest) {
+        double dailyPrice, totalPrice;
+        try {
+            Result result = checkAvailability(createRentalRequest);
+            if (!result.isSuccess()) {
+                throw new RuntimeException(result.getMessage());
+            }
 
-        dailyPrice = carBusinessRules.getCarDailyPrice(rental.getCar().getId());
-        totalPrice = rentalBusinessRules.calculateTotalPrice(dailyPrice, rental.getStartDate(), rental.getEndDate());
+            Rental rental = modelMapperService.forRequest().map(createRentalRequest, Rental.class);
+            dailyPrice = carBusinessRules.getCarDailyPrice(rental.getCar().getId());
+            totalPrice = rentalBusinessRules.calculateTotalPrice(dailyPrice, rental.getStartDate(), rental.getEndDate());
 
-        rental.setTotalPrice(totalPrice);
-        rental.setCreatedDate(LocalDateTime.now());
-        rentalRepository.save(rental);
+            rental.setTotalPrice(totalPrice);
+            rental.setPaid(true);
+            rental.setCreatedDate(LocalDateTime.now());
+            rentalRepository.save(rental);
 
-        CreateRentalResponse response = modelMapperService.forResponse().map(rental, CreateRentalResponse.class);
-        return response;
+            return new Result(true, RentalMessages.RentalSaved);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
     @Override

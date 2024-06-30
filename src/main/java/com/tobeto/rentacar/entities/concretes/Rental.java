@@ -31,4 +31,7 @@ public class Rental extends BaseEntity {
 
     @Column(name = "totalPrice")
     private double totalPrice;
+
+    @Column(name = "isPaid")
+    private boolean isPaid;
 }
