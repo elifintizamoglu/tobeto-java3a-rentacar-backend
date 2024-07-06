@@ -23,5 +23,4 @@ I developed this project using;
 - Authentication added.
 
 ## Database Structure
-![Database tables and relations]
-(https://github.com/elifintizamoglu/tobeto-java3a-rentacar-backend/blob/master/src/main/resources/static/RentACarDatabase.png)
+![Database tables and relations:](https://github.com/elifintizamoglu/tobeto-java3a-rentacar-backend/blob/master/src/main/resources/static/RentACarDatabase.png)
